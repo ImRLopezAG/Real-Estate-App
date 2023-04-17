@@ -13,7 +13,7 @@ public static class DefaultAdminUser {
       EmailConfirmed = true,
       PhoneNumberConfirmed = true,
       DNI = "adminUser",
-      Image= "https://www.lansweeper.com/wp-content/uploads/2018/05/ASSET-USER-ADMIN.png" 
+      Image = "https://www.lansweeper.com/wp-content/uploads/2018/05/ASSET-USER-ADMIN.png"
     };
 
     if (userManager.Users.All(u => u.Id != defaultUser.Id)) {

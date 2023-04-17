@@ -1,10 +1,10 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using RSApp.Core.Services.Helpers;
 using RSApp.Core.Domain.Entities;
 using RSApp.Core.Services.Contracts;
 using RSApp.Core.Services.Core;
 using RSApp.Core.Services.Dtos.Account;
+using RSApp.Core.Services.Helpers;
 using RSApp.Core.Services.Repositories;
 using RSApp.Core.Services.Services;
 using RSApp.Core.Services.ViewModels;
@@ -59,8 +59,7 @@ public class PropertyService : GenericService<PropertyVm, SavePropertyVm, Proper
     return query;
   }
 
-  public async Task<IEnumerable<PropertyVm>> GetFavorites()
-  {
+  public async Task<IEnumerable<PropertyVm>> GetFavorites() {
     var favorites = await _favoriteRepository.GetAll();
     var types = await _propTypeRepository.GetAll();
     var sales = await _saleRepository.GetAll();
@@ -79,8 +78,7 @@ public class PropertyService : GenericService<PropertyVm, SavePropertyVm, Proper
     return query;
   }
 
-  public async Task<IEnumerable<PropertyVm>> GetOwnProperties()
-  {
+  public async Task<IEnumerable<PropertyVm>> GetOwnProperties() {
     var types = await _propTypeRepository.GetAll();
     var sales = await _saleRepository.GetAll();
 

@@ -35,7 +35,7 @@ public static class ManageFile {
   }
 
 
-  public static string UploadProperty(IFormFile file, string id,int pId, bool isEditMode = false, string imagePath = "") {
+  public static string UploadProperty(IFormFile file, string id, int pId, bool isEditMode = false, string imagePath = "") {
     if (isEditMode) {
       if (file == null)
         return imagePath;
