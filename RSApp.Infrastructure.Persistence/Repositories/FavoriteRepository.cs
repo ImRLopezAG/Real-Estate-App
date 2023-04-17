@@ -11,8 +11,7 @@ public class FavoriteRepository : GenericRepository<Favorite>, IFavoriteReposito
 
   public FavoriteRepository(RSAppContext context) : base(context) => _context = context;
 
-  public async Task<Favorite> GetByPropAndUser(int propId, string userId)
-  {
+  public async Task<Favorite> GetByPropAndUser(int propId, string userId) {
     return await _context.Favorites.FirstOrDefaultAsync(f => f.PropertyId == propId && f.UserId == userId);
   }
 }

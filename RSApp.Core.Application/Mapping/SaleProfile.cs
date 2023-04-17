@@ -1,4 +1,5 @@
 using AutoMapper;
+using RSApp.Core.Application.Features.Sales.Commands.Update;
 using RSApp.Core.Domain.Entities;
 using RSApp.Core.Services.Dtos.Sale;
 using RSApp.Core.Services.ViewModels;
@@ -11,12 +12,14 @@ public class SaleProfile : Profile {
     CreateMap<Sale, SaleVm>()
     .ForMember(vm => vm.HasError, opt => opt.Ignore())
     .ForMember(vm => vm.ErrorMessage, opt => opt.Ignore())
-    .ReverseMap();
+    .ReverseMap()
+    .ForMember(ent => ent.Properties, opt => opt.Ignore());
 
     CreateMap<Sale, SaveSaleVm>()
     .ForMember(vm => vm.HasError, opt => opt.Ignore())
     .ForMember(vm => vm.ErrorMessage, opt => opt.Ignore())
-    .ReverseMap();
+    .ReverseMap()
+    .ForMember(ent => ent.Properties, opt => opt.Ignore());
 
     CreateMap<Sale, SaleDto>()
     .ReverseMap()
@@ -25,5 +28,12 @@ public class SaleProfile : Profile {
     CreateMap<Sale, SaveSaleDto>()
     .ReverseMap()
     .ForMember(ent => ent.Properties, opt => opt.Ignore());
+
+    CreateMap<Sale, UpdateSaleResponse>()
+    .ReverseMap()
+    .ForMember(ent => ent.CreatedAt, opt => opt.Ignore())
+    .ForMember(ent => ent.LastModifiedAt, opt => opt.Ignore())
+    .ForMember(ent => ent.Properties, opt => opt.Ignore());
+
   }
 }

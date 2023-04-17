@@ -1,12 +1,10 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RSApp.Core.Services.Services;
 using RSApp.Core.Services.ViewModels.SaveVm;
 
 namespace RSApp.Presentation.WebApp.Controllers;
 
-public class UpgradeController: Controller
-{
+public class UpgradeController : Controller {
   private readonly IUpgradeService _upgradeService;
 
   public UpgradeController(IUpgradeService upgradeService) {

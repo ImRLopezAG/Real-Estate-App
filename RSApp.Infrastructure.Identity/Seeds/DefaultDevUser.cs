@@ -13,7 +13,7 @@ public static class DefaultDevUser {
       EmailConfirmed = true,
       PhoneNumberConfirmed = true,
       DNI = "Dev123456",
-      Image="https://img.favpng.com/2/6/10/computer-icons-user-interface-computer-programming-software-developer-png-favpng-KVWZcevpeKvpHCgxvibJupffc.jpg"
+      Image = "https://img.favpng.com/2/6/10/computer-icons-user-interface-computer-programming-software-developer-png-favpng-KVWZcevpeKvpHCgxvibJupffc.jpg"
     };
 
     if (userManager.Users.All(u => u.Id != defaultUser.Id)) {
