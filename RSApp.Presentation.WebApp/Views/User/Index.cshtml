@@ -1,0 +1,33 @@
+﻿@model RSApp.Core.Services.ViewModels.User.LoginVm;
+@{
+  ViewData["Title"] = "Login";
+}
+
+<div class="row">
+  <div class="col-md-4 mx-auto">
+    <h2 class="text-start font-mono text-4xl mb-3">Login</h2>
+    <hr class="mb-4" />
+    @if (Model.HasError)
+    {
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p>@Model.Error</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    }
+    <form asp-controller="User" asp-action="Index">
+      <div class="form-group">
+        <input asp-for="Email" placeholder="Email" class="form-control" />
+      </div>
+      <div class="form-group mb-3 mt-3">
+        <input asp-for="Password" placeholder="Password" class="form-control" />
+      </div>
+      <div class="btn-group mb-3 col-12">
+      <a asp-action="Create" asp-controller="AdminUser" class="btn btn-outline-primary w-full">Register</a>
+      <input type="submit" class="btn w-25 btn-outline-success w-100" value="Login" />
+    </div>
+      <div class="form-group text-center">
+        <a asp-controller="User" asp-action="ForgotPassword" class="btn btn-link text-end">Forgot password?</a>
+      </div>
+    </form>
+  </div>
+</div>

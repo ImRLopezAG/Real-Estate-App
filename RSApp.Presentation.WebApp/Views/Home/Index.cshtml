@@ -1,0 +1,10 @@
+﻿@{
+  ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+  <div class="text-center mb-3">
+    <h1 class="display-4">Welcome to Real State App</h1>
+  </div>
+  @await Component.InvokeAsync("PropertyList")
+</div>

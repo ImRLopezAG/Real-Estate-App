@@ -1,0 +1,102 @@
+﻿@model RSApp.Core.Services.ViewModels.SaveVm.SaveUserVm
+@using RSApp.Core.Services.Dtos.Account
+@using Microsoft.AspNetCore.Http;
+@using RSApp.Core.Services.Helpers;
+@inject IHttpContextAccessor _httpContext;
+@{
+  ViewData["Title"] = "Home Page";
+  AuthenticationResponse user = _httpContext.HttpContext.Session.Get<AuthenticationResponse>("user");
+}
+
+@{
+  ViewData["Title"] = "Sign Up";
+}
+
+<h1 class="text-4xl mb-3">Sign Up</h1>
+
+<hr />
+<div class="row">
+  <div class="col-md-4">
+    @if (Model.HasError)
+    {
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p>@Model.Error</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    }
+    <form asp-action="Create" enctype="multipart/form-data">
+      <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+      <div class="form-group">
+        <label asp-for="FirstName" class="text-lg ">First Name</label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+      </div>
+      <div class="form-group">
+        <label asp-for="LastName" class="text-lg">Last Name</label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+      </div>
+      <div class="form-group">
+        <label asp-for="ImageFile" class="text-lg">Image</label>
+        <input asp-for="ImageFile" class="form-control"  required />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+      </div>
+      <div class="form-group">
+        <label asp-for="Email" class="text-lg"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+      </div>
+      <div class="form-group">
+        <label asp-for="PhoneNumber" class="text-lg">Phone </label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+      </div>
+      <div class="form-group">
+        <label asp-for="DNI" class="text-lg"></label>
+        <input asp-for="DNI" class="form-control" />
+        <span asp-validation-for="DNI" class="text-danger"></span>
+      </div>
+      <div class="form-group">
+        <label asp-for="UserName" class="text-lg"></label>
+        <input asp-for="UserName" class="form-control" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+      </div>
+      <div class="form-group">
+        <label asp-for="Password" class="text-lg"></label>
+        <input asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+      </div>
+      <div class="form-group mb-3">
+        <label asp-for="ConfirmPassword" class="text-lg"> Confirm Password</label>
+        <input asp-for="ConfirmPassword" class="form-control" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+      </div>
+      <div class="form-group mb-3">
+        <label asp-for="Role" class="text-lg"></label>
+        <select asp-for="Role" class="form-control">
+          @if (user != null && user.Roles.Contains("Admin"))
+          {
+            <option value="1">Admin</option>
+            <option value="2">Developer</option>
+            <option value="3">Agent</option>
+          }
+          <option value="4">Client</option>
+        </select>
+        <span asp-validation-for="Role" class="text-danger"></span>
+      </div>
+      <div>
+        <div class="btn-group mb-3 col-12">
+          <a asp-action="Index" asp-controller="Home" class="btn btn-outline-primary w-full">Back</a>
+          <input type="submit" class="btn w-25 btn-outline-success w-100" value="Create" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+@section Scripts {
+@{
+await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+
+}

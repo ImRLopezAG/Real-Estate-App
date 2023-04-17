@@ -1,0 +1,168 @@
+﻿@using RSApp.Core.Services.Dtos.Account
+@using Microsoft.AspNetCore.Http;
+@using RSApp.Core.Services.Helpers;
+@inject IHttpContextAccessor _httpContext;
+@{
+  AuthenticationResponse? user = _httpContext.HttpContext.Session.Get<AuthenticationResponse>("user");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@ViewData["Title"] - Real State App</title>
+  <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="~/RSApp.Presentation.WebApp.styles.css" asp-append-version="true" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            clifford: '#da373d',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-dark bg-dark mb-4">
+      <div class="container-fluid d-flex">
+        <a class="navbar-brand" asp-action="Index" asp-controller="@(user!=null? "Home":"User")">RSApp</a>
+        @if (user != null && user.Roles.Where(x => x.ToString() == "Admin").Any())
+        {
+          <ul class="navbar-nav gap-3 d-flex flex-row flex-grow-1">
+            <li class="nav-item">
+              <a class="nav-link text" asp-action="Index" asp-controller="Type">Types</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text" asp-action="Index" asp-controller="Sale">Sales</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text" asp-action="Index" asp-controller="Upgrade">Upgrades</a>
+            </li>
+          </ul>
+        }
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+          <div class="offcanvas-header bg-dark text-white">
+            @if (user != null)
+            {
+              <div class="d-flex flex-row gap-3 align-items-center">
+                <h5 class="text-white"><i class="bi bi-at"></i>@user.UserName</h5>
+              </div>
+            }
+            else
+            {
+              <h4 class="text-white">Real State app</h4>
+            }
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body bg-dark">
+            @if (user != null)
+            {
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                  <a class="nav-link active" asp-action="Index" asp-controller="Home">Home</a>
+                </li>
+                @if (user.Roles.Where(x => x.ToString() == "Client").Any()) 
+                {
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                      Properties
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a class="dropdown-item" asp-action="Favorites" asp-controller="Client">
+                          Favorites
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  
+                }
+                else if (user.Roles.Where(x => x.ToString() == "Agent").Any())
+                {
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                      Properties
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a class="dropdown-item" asp-action="Create" asp-controller="Property">
+                          Create
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" asp-action="Index" asp-controller="Agent">
+                          Favorites
+                        </a>
+                      </li>
+                      <hr class="dropdown-divider">
+                      <li>
+                        <a class="dropdown-item" asp-action="OwnProperty" asp-controller="Agent">
+                          My properties
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                }
+                else 
+                {
+                  <li class="nav-item">
+                    <a class="nav-link" asp-action="Index" asp-controller="AdminUser">Users</a>
+                  </li>
+                }
+              </ul>
+            }
+            <div class="d-flex flex-column">
+              @if (user != null)
+              {
+                <a class="btn btn-outline-danger mt-3" asp-action="Logout" asp-controller="User">Logout</a>
+              }
+              else
+              {
+                <div class="">
+                  <a class="btn btn-outline-primary " asp-action="Index" asp-controller="User">Login</a>
+                  <a class="btn btn-outline-primary" asp-action="Create" asp-controller="User">Register</a>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <div class="container">
+    <main role="main" class="pb-6">
+      @RenderBody()
+    </main>
+  </div>
+
+  <div class="pt-12">
+    <footer class="border-t-2 absolute bottom-0 w-full h-14 text-muted">
+      <div class="container mt-auto">
+        &copy; 2023 - Real State App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="~/lib/jquery/dist/jquery.min.js"></script>
+  <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="~/js/site.js" asp-append-version="true"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+  @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

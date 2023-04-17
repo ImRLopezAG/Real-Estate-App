@@ -1,0 +1,35 @@
+@using RSApp.Core.Services.ViewModels.SaveVm;
+@model SaveSaleVm;
+
+@{
+  ViewData["Title"] = "Create Sale";
+}
+
+<div class="row text-lg">
+  <div class="col-md-5">
+    <h2 class="text-3xl mb-3">Create Sale</h2>
+  @if (Model.HasError)
+    {
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p>@Model.ErrorMessage</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    }
+  <form asp-action="Create">
+    <div class="form-group mb-3">
+      <label asp-for="Name" class="control-label"></label>
+      <input asp-for="Name" class="form-control" />
+      <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+      <label asp-for="Description" class="control-label"></label>
+      <input asp-for="Description" class="form-control" />
+      <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="btn-group mb-3 col-12">
+      <a asp-action="Index" asp-controller="Home" class="btn btn-outline-primary w-full">Back</a>
+      <input type="submit" class="btn w-25 btn-outline-success w-100" value="Create" />
+    </div>
+  </form>
+  </div>
+</div>

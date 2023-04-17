@@ -1,0 +1,11 @@
+@{
+  ViewData["Title"] = "Types";
+}
+<div class="row">
+  <div class="d-flex justify-content-between align-items-center">
+    <h1 class="font-monospace text-2xl">Upgrades</h1>
+    <a asp-action="Create" class="btn btn-outline-primary">Create</a>
+  </div>
+  <hr class="my-3 " />
+  @await Component.InvokeAsync("UpgradeList")
+</div>
