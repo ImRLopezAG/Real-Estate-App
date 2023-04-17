@@ -1,4 +1,5 @@
 using AutoMapper;
+using RSApp.Core.Application.Features.PropTypes.Commands.Create;
 using RSApp.Core.Application.Features.PropTypes.Commands.Update;
 using RSApp.Core.Domain.Entities;
 using RSApp.Core.Services.Dtos.Type;
@@ -34,5 +35,18 @@ public class PropTypeProfile : Profile {
     .ForMember(ent => ent.CreatedAt, opt => opt.Ignore())
     .ForMember(ent => ent.LastModifiedAt, opt => opt.Ignore())
     .ForMember(ent => ent.Properties, opt => opt.Ignore());
+
+    CreateMap<PropType, UpdatePropTypeCommand>()
+    .ReverseMap()
+    .ForMember(ent => ent.CreatedAt, opt => opt.Ignore())
+    .ForMember(ent => ent.LastModifiedAt, opt => opt.Ignore())
+    .ForMember(ent => ent.Properties, opt => opt.Ignore());
+
+    CreateMap<PropType, CreatePropTypeCommand>()
+    .ReverseMap()
+    .ForMember(ent => ent.CreatedAt, opt => opt.Ignore())
+    .ForMember(ent => ent.LastModifiedAt, opt => opt.Ignore())
+    .ForMember(ent => ent.Properties, opt => opt.Ignore());
+
   }
 }
