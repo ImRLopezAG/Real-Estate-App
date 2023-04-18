@@ -16,8 +16,11 @@ public class UserListViewComponent : ViewComponent {
     _currentUser = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
   }
 
-  public async Task<IViewComponentResult> InvokeAsync() {
-    var users = await _userService.GetAll().ContinueWith(x => x.Result.Where(us => us.Id != _currentUser.Id));
+  public async Task<IViewComponentResult> InvokeAsync(string role) {
+    
+    var users = await _userService.GetAll().ContinueWith(x => x.Result.Where(us => us.Id != _currentUser.Id ));
+    if (role != null)
+      users = users.Where(us => us.Role == role);
     return View(users);
   }
 }

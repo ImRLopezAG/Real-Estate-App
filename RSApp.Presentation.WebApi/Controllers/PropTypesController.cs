@@ -9,79 +9,81 @@ using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Mime;
 
 namespace RSApp.Presentation.WebApi.Controllers {
-    [ApiVersion("1.0")]
-    [SwaggerTag("Mantenimiento de tipo de propiedades")]
-    public class PropTypesController : BaseApiController {
-        [HttpGet("List")]
-        [SwaggerOperation(
-            summary: "Listado de tipos de propiedades",
-            description: "Obtiene todas las ventas del sistema"
-        )]
-        public async Task<IActionResult> Get([FromQuery] GetAllPropTypesQuery query) {
-            try {
-                var result = await Mediator.Send(query);
-                return Ok(result);
-            } catch (Exception ex) {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("{id}")]
-        [SwaggerOperation(
-            summary: "Filtra los tipos de propiedades por ID",
-            description: "Obtiene el tipo de propiedad por ID"
-        )]
-        public async Task<IActionResult> GetById([FromQuery] int id) {
-            try {
-                return Ok(await Mediator.Send(new GetByIdPropTypeQuery { Id = id }));
-            } catch (Exception ex) {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost]
-        [Consumes(MediaTypeNames.Application.Json)]
-        [SwaggerOperation(
-            summary: "Creaci�n de tipos de propiedades",
-            description: "Recibe los parametros necesarios para crear tipos de propiedades"
-        )]
-
-        public async Task<IActionResult> Post([FromQuery] CreatePropTypeCommand command) {
-            try {
-                await Mediator.Send(command);
-                return NoContent();
-            } catch (Exception ex) {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPut]
-        [Consumes(MediaTypeNames.Application.Json)]
-        [SwaggerOperation(
-            summary: "Actualizaci�n de tipos de propiedades",
-            description: "Recibe los parametros necesarios para actualizar tipos de propiedades"
-        )]
-
-        public async Task<IActionResult> Put([FromQuery] UpdatePropTypeCommand command) {
-            try {
-                return Ok(await Mediator.Send(command));
-            } catch (Exception ex) {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpDelete("{id}")]
-        [SwaggerOperation(
-            summary: "Eliminar un tipo de propiedad",
-            description: "Recibe un ID para eliminar un tipo de propiedad"
-        )]
-        public async Task<IActionResult> Delete(int id) {
-            try {
-                await Mediator.Send(new DeletePropTypeCommand { Id = id });
-                return NoContent();
-            } catch (Exception ex) {
-                return BadRequest(ex.Message);
-            }
-        }
+  [ApiVersion("1.0")]
+  [SwaggerTag("Maintenance of property types")]
+  public class PropTypesController : BaseApiController {
+    [HttpGet]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(
+        summary: "List of property types",
+        description: "Get all property types"
+    )]
+    public async Task<IActionResult> List(GetAllPropTypesQuery query) {
+      try {
+        var result = await Mediator.Send(query);
+        return Ok(result);
+      } catch (Exception ex) {
+        return BadRequest(ex.Message);
+      }
     }
+
+    [HttpGet("{id}")]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(
+        summary: "Get a property type by ID",
+        description: "Get a property type by ID"
+    )]
+    public async Task<IActionResult> Get([FromQuery] int id) {
+      try {
+        return Ok(await Mediator.Send(new GetByIdPropTypeQuery { Id = id }));
+      } catch (Exception ex) {
+        return BadRequest(ex.Message);
+      }
+    }
+
+    [HttpPost]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(
+        summary: "Create a new property type",
+        description: "Get the parameters to create a new property type"
+    )]
+
+    public async Task<IActionResult> Create([FromBody] CreatePropTypeCommand command) {
+      try {
+        await Mediator.Send(command);
+        return NoContent();
+      } catch (Exception ex) {
+        return BadRequest(ex.Message);
+      }
+    }
+
+    [HttpPut("{id}")]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(
+        summary: "Update a property type",
+        description: "Get the parameters to update a property type"
+    )]
+
+    public async Task<IActionResult> Update([FromBody] UpdatePropTypeCommand command) {
+      try {
+        return Ok(await Mediator.Send(command));
+      } catch (Exception ex) {
+        return BadRequest(ex.Message);
+      }
+    }
+
+    [HttpDelete("{id}")]
+    [SwaggerOperation(
+        summary: "Delete a property type",
+        description: "Get the ID of the property type to delete"
+    )]
+    public async Task<IActionResult> Delete(int id) {
+      try {
+        await Mediator.Send(new DeletePropTypeCommand { Id = id });
+        return NoContent();
+      } catch (Exception ex) {
+        return BadRequest(ex.Message);
+      }
+    }
+  }
 }

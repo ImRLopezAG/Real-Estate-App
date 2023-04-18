@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RSApp.Core.Services.Dtos.Account;
 using RSApp.Core.Services.Helpers;
@@ -6,7 +7,7 @@ using RSApp.Core.Services.ViewModels.SaveVm;
 using RSApp.Presentation.WebApp.helpers;
 
 namespace RSApp.Presentation.WebApp.Controllers;
-
+[Authorize(Policy = "AgentOrClient")]
 public class PropertyController : Controller {
   private readonly IPropertyService _propertyService;
   private readonly IPropTypeService _propTypeService;
@@ -27,14 +28,14 @@ public class PropertyController : Controller {
   }
   public IActionResult Index() => View();
 
-  public async Task<IActionResult> Details(int id) => View(await _propertyService.GetById(id));
-
+  [Authorize(Roles = "Agent")]
   public async Task<IActionResult> Create() => View(new SavePropertyVm() {
     Types = await _propTypeService.GetAll(),
     Sales = await _saleService.GetAll()
   });
 
   [HttpPost]
+  [Authorize(Roles = "Agent")]
   public async Task<IActionResult> Create(SavePropertyVm model) {
     if (!ModelState.IsValid)
       return View(await Error(model));
@@ -61,6 +62,7 @@ public class PropertyController : Controller {
     return RedirectToAction("Index");
   }
 
+  [Authorize(Roles = "Agent")]
   public async Task<IActionResult> Edit(int id) {
     var property = await _propertyService.GetEntity(id);
     property.Sales = await _saleService.GetAll();
@@ -69,6 +71,7 @@ public class PropertyController : Controller {
   }
 
   [HttpPost]
+  [Authorize(Roles = "Agent")]
   public async Task<IActionResult> Edit(SavePropertyVm model) {
     if (!ModelState.IsValid)
       return View(model);
@@ -77,6 +80,7 @@ public class PropertyController : Controller {
     return RedirectToAction("Index");
   }
 
+  [Authorize(Roles = "Agent")]
   public async Task<IActionResult> Delete(int id) {
     var property = await _propertyService.GetEntity(id);
     if (property != null)
@@ -102,6 +106,7 @@ public class PropertyController : Controller {
   }
 
   [HttpPost]
+  [Authorize(Roles = "Agent")]
   public async Task<IActionResult> DeleteFromFavorite(int propertyId) {
     var url = Request.Headers["Referer"].ToString();
 

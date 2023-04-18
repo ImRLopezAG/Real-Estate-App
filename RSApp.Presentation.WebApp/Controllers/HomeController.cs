@@ -1,14 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RSApp.Core.Services.Contracts;
+using RSApp.Core.Services.Services;
 using RSApp.Presentation.WebApp.Models;
 using System.Diagnostics;
 
 namespace RSApp.Presentation.WebApp.Controllers;
 
 public class HomeController : Controller {
-  private readonly ILogger<HomeController> _logger;
+  private readonly IUserService _userService;
+  private readonly IPropertyService _propertyService;
 
-  public HomeController(ILogger<HomeController> logger) {
-    _logger = logger;
+  public HomeController(IUserService userService, IPropertyService propertyService) {
+    _userService = userService;
+    _propertyService = propertyService;
   }
 
   public IActionResult Index() {
@@ -19,8 +23,14 @@ public class HomeController : Controller {
     return View();
   }
 
-  [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-  public IActionResult Error() {
-    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+  public async Task<IActionResult> Agents(){
+    var agents = await _userService.GetAll();
+    return View(agents.Where(us => us.Role == "Agent"));
   }
+
+  public async Task<IActionResult> Properties(string id){
+    var properties = await _propertyService.GetAll();
+    return View(properties.Where(p => p.Agent == id));
+  }
+
 }

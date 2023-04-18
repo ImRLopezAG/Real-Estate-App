@@ -9,10 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers(opt => {
-    opt.Filters.Add(new ProducesAttribute("application/json"));
-}).ConfigureApiBehaviorOptions(option => {
-    option.SuppressInferBindingSourcesForParameters = true;
-    option.SuppressMapClientErrors = false;
+  opt.Filters.Add(new ProducesAttribute("application/json"));
+}).ConfigureApiBehaviorOptions(opt => {
+  opt.SuppressInferBindingSourcesForParameters = true;
+  opt.SuppressMapClientErrors = false;
 });
 
 builder.Services.AddPersistenceInfrastructure(builder.Configuration);
@@ -33,8 +33,8 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+  app.UseSwagger();
+  app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -45,10 +45,12 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSwaggerExtension();
+app.UseErrorHandlingMiddleware();
 app.UseHealthChecks("/health");
+app.UseSession();
 
 app.UseEndpoints(endpoints => {
-    endpoints.MapControllers();
+  endpoints.MapControllers();
 });
 
 app.Run();

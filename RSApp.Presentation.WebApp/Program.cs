@@ -21,6 +21,16 @@ builder.Services.AddScoped<SaveAuthorize>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<ValidateSessions, ValidateSessions>();
 
+builder.Services.AddAuthorization(opt => {
+  opt.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+  opt.AddPolicy("Agent", policy => policy.RequireRole("Agent"));
+  opt.AddPolicy("Client", policy => policy.RequireRole("Client"));
+  opt.AddPolicy("AdminOrAgent", policy => policy.RequireRole("Admin", "Agent"));
+  opt.AddPolicy("AdminOrClient", policy => policy.RequireRole("Admin", "User"));
+  opt.AddPolicy("AgentOrClient", policy => policy.RequireRole("Agent", "User"));
+});
+
+
 
 var app = builder.Build();
 
