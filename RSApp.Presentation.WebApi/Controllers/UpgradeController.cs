@@ -9,10 +9,12 @@ using RSApp.Core.Application.Features.Upgrades.Commands.Delete;
 using RSApp.Core.Application.Features.Upgrades.Commands.Update;
 using RSApp.Core.Application.Features.Upgrades.Queries.GetAll;
 using RSApp.Core.Application.Features.Upgrades.Queries.GetBbyId;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace RSApp.Presentation.WebApi.Controllers
 {
     [ApiVersion("1.0")]
+    [SwaggerTag("Mantenimiento de mejoras")]
     public class UpgradeController : BaseApiController
     {
         [HttpGet("List")]
