@@ -63,7 +63,7 @@
       <span asp-validation-for="Bathrooms" class="text-danger"></span>
     </div>
     <div class="form-group mb-3">
-      <label asp-for="TypeId" class="control-label"></label>
+      <label asp-for="TypeId" class="control-label">Type</label>
       <select asp-for="TypeId" class="form-control">
         <option value="">Select Type</option>
         @foreach (var type in Model.Types)
@@ -73,7 +73,7 @@
       </select>
     </div>
     <div class="form-group mb-3">
-      <label asp-for="SaleId" class="control-label"></label>
+      <label asp-for="SaleId" class="control-label">Sale</label>
       <select asp-for="SaleId" class="form-control">
         <option value="">Select Type</option>
         @foreach (var sale in Model.Sales)

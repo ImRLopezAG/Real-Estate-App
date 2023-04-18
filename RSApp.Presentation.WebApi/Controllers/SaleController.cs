@@ -9,79 +9,81 @@ using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Mime;
 
 namespace RSApp.Presentation.WebApi.Controllers {
-    [ApiVersion("1.0")]
-    [SwaggerTag("Mantenimiento de ventas")]
-    public class SaleController : BaseApiController {
-        [HttpGet("List")]
-        [SwaggerOperation(
-            summary: "Listado de ventas",
-            description: "Obtiene todas las ventas del sistema"
-        )]
-        public async Task<IActionResult> Get([FromQuery] GetAllSalesQuery query) {
-            try {
-                var result = await Mediator.Send(query);
-                return Ok(result);
-            } catch (Exception ex) {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("{id}")]
-        [SwaggerOperation(
-            summary: "Filtra las ventas por ID",
-            description: "Obtiene una venta en especifico por el ID"
-        )]
-        public async Task<IActionResult> GetById([FromQuery] int id) {
-            try {
-                return Ok(await Mediator.Send(new GetByIdQuery { Id = id }));
-            } catch (Exception ex) {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost]
-        [Consumes(MediaTypeNames.Application.Json)]
-        [SwaggerOperation(
-            summary: "Creación de venta",
-            description: "Recibe los parametros necesarios para crear una nueva venta"
-        )]
-
-        public async Task<IActionResult> Post([FromBody] CreateSaleCommand command) {
-            try {
-                await Mediator.Send(command);
-                return NoContent();
-            } catch (Exception ex) {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPut]
-        [Consumes(MediaTypeNames.Application.Json)]
-        [SwaggerOperation(
-            summary: "Actualización de venta",
-            description: "Recibe los parametros necesarios para actualizar una venta"
-        )]
-
-        public async Task<IActionResult> Put([FromBody] UpdateSaleCommand command) {
-            try {
-                return Ok(await Mediator.Send(command));
-            } catch (Exception ex) {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpDelete("{id}")]
-        [SwaggerOperation(
-            summary: "Eliminar una venta",
-            description: "Recibe un ID para eliminar la venta correspondiente"
-        )]
-        public async Task<IActionResult> Delete(int id) {
-            try {
-                await Mediator.Send(new DeleteSaleCommand { Id = id });
-                return NoContent();
-            } catch (Exception ex) {
-                return BadRequest(ex.Message);
-            }
-        }
+  [ApiVersion("1.0")]
+  [SwaggerTag("Maintenance of sales")]
+  public class SaleController : BaseApiController {
+    [HttpGet]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(
+        summary: "List of sales",
+        description: "Get all sales"
+    )]
+    public async Task<IActionResult> List(GetAllSalesQuery query) {
+      try {
+        var result = await Mediator.Send(query);
+        return Ok(result);
+      } catch (Exception ex) {
+        return BadRequest(ex.Message);
+      }
     }
+
+    [HttpGet("{id}")]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(
+        summary: "Get a sale by ID",
+        description: "Get a sale by ID"
+    )]
+    public async Task<IActionResult> Get([FromQuery] int id) {
+      try {
+        return Ok(await Mediator.Send(new GetByIdQuery { Id = id }));
+      } catch (Exception ex) {
+        return BadRequest(ex.Message);
+      }
+    }
+
+    [HttpPost]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(
+        summary: "Create a new sale",
+        description: "Get the parameters to create a new sale"
+    )]
+
+    public async Task<IActionResult> Create([FromBody] CreateSaleCommand command) {
+      try {
+        await Mediator.Send(command);
+        return NoContent();
+      } catch (Exception ex) {
+        return BadRequest(ex.Message);
+      }
+    }
+
+    [HttpPut("{id}")]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [SwaggerOperation(
+        summary: "Update a sale",
+        description: "Get the parameters to update a sale"
+    )]
+
+    public async Task<IActionResult> Update([FromBody] UpdateSaleCommand command) {
+      try {
+        return Ok(await Mediator.Send(command));
+      } catch (Exception ex) {
+        return BadRequest(ex.Message);
+      }
+    }
+
+    [HttpDelete("{id}")]
+    [SwaggerOperation(
+        summary: "Delete a sale",
+        description: "Get the ID of the sale to delete"
+    )]
+    public async Task<IActionResult> Delete(int id) {
+      try {
+        await Mediator.Send(new DeleteSaleCommand { Id = id });
+        return NoContent();
+      } catch (Exception ex) {
+        return BadRequest(ex.Message);
+      }
+    }
+  }
 }

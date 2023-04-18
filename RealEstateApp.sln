@@ -27,21 +27,26 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{A6AEBE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApp", "WebApp", "{190F5370-F908-4F48-A30B-E5D845A7F5C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSApp.Core.Application", "RSApp.Core.Application\RSApp.Core.Application.csproj", "{35456EFB-84EC-4D32-955E-62FC2440AF44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSApp.Core.Application", "RSApp.Core.Application\RSApp.Core.Application.csproj", "{35456EFB-84EC-4D32-955E-62FC2440AF44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSApp.Core.Domain", "RSApp.Core.Domain\RSApp.Core.Domain.csproj", "{F6F74D46-45DC-41EC-BDA7-98DBC41F2A03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSApp.Core.Domain", "RSApp.Core.Domain\RSApp.Core.Domain.csproj", "{F6F74D46-45DC-41EC-BDA7-98DBC41F2A03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSApp.Core.Services", "RSApp.Core.Services\RSApp.Core.Services.csproj", "{467F1766-FFD8-455F-A11C-A379B598D957}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSApp.Core.Services", "RSApp.Core.Services\RSApp.Core.Services.csproj", "{467F1766-FFD8-455F-A11C-A379B598D957}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSApp.Infrastructure.Identity", "RSApp.Infrastructure.Identity\RSApp.Infrastructure.Identity.csproj", "{29BF786C-5B5F-4632-8B28-0A011425997B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSApp.Infrastructure.Identity", "RSApp.Infrastructure.Identity\RSApp.Infrastructure.Identity.csproj", "{29BF786C-5B5F-4632-8B28-0A011425997B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSApp.Infrastructure.Persistence", "RSApp.Infrastructure.Persistence\RSApp.Infrastructure.Persistence.csproj", "{1ACC18B4-21B5-475F-9F8E-C0F6230A53EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSApp.Infrastructure.Persistence", "RSApp.Infrastructure.Persistence\RSApp.Infrastructure.Persistence.csproj", "{1ACC18B4-21B5-475F-9F8E-C0F6230A53EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSApp.Infrastructure.Shared", "RSApp.Infrastructure.Shared\RSApp.Infrastructure.Shared.csproj", "{03A497CC-A0EB-446B-BB23-4EC574EC72FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSApp.Infrastructure.Shared", "RSApp.Infrastructure.Shared\RSApp.Infrastructure.Shared.csproj", "{03A497CC-A0EB-446B-BB23-4EC574EC72FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSApp.Presentation.WebApi", "RSApp.Presentation.WebApi\RSApp.Presentation.WebApi.csproj", "{E54CF48D-7EE4-4B9D-AF35-F77A69BF3054}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSApp.Presentation.WebApi", "RSApp.Presentation.WebApi\RSApp.Presentation.WebApi.csproj", "{E54CF48D-7EE4-4B9D-AF35-F77A69BF3054}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSApp.Presentation.WebApp", "RSApp.Presentation.WebApp\RSApp.Presentation.WebApp.csproj", "{14B144BE-3538-4E2D-8175-6F6F18D4F339}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSApp.Presentation.WebApp", "RSApp.Presentation.WebApp\RSApp.Presentation.WebApp.csproj", "{14B144BE-3538-4E2D-8175-6F6F18D4F339}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F9FFA03C-5290-4430-BD38-230BFEDB5792}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

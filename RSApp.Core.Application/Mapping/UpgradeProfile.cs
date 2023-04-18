@@ -36,11 +36,11 @@ public class UpgradeProfile : Profile {
     .ForMember(ent => ent.LastModifiedAt, opt => opt.Ignore())
     .ForMember(ent => ent.PropertyUpgrades, opt => opt.Ignore());
 
-     CreateMap<Upgrade, UpdateUpgradeCommand>()
-    .ReverseMap()
-    .ForMember(ent => ent.CreatedAt, opt => opt.Ignore())
-    .ForMember(ent => ent.LastModifiedAt, opt => opt.Ignore())
-    .ForMember(ent => ent.PropertyUpgrades, opt => opt.Ignore());
+    CreateMap<Upgrade, UpdateUpgradeCommand>()
+   .ReverseMap()
+   .ForMember(ent => ent.CreatedAt, opt => opt.Ignore())
+   .ForMember(ent => ent.LastModifiedAt, opt => opt.Ignore())
+   .ForMember(ent => ent.PropertyUpgrades, opt => opt.Ignore());
 
     CreateMap<Upgrade, CreateUpgradeCommand>()
     .ReverseMap()

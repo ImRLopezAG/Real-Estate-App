@@ -34,7 +34,13 @@
   <header>
     <nav class="navbar navbar-dark bg-dark mb-4">
       <div class="container-fluid d-flex">
-        <a class="navbar-brand" asp-action="Index" asp-controller="@(user!=null? "Home":"User")">RSApp</a>
+        <div>
+          <a class="navbar-brand" asp-action="Index" asp-controller="@(user!=null? "Home":"User")">RSApp</a>
+          @if (user == null)
+          {
+            <a class="navbar-brand" asp-action="Agents" asp-controller="Home">Agents</a>
+          }
+        </div>
         @if (user != null && user.Roles.Where(x => x.ToString() == "Admin").Any())
         {
           <ul class="navbar-nav gap-3 d-flex flex-row flex-grow-1">
@@ -46,9 +52,6 @@
             </li>
             <li class="nav-item">
               <a class="nav-link text" asp-action="Index" asp-controller="Upgrade">Upgrades</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text" asp-action="Index" asp-controller="Property">Property</a>
             </li>
           </ul>
         }
@@ -125,6 +128,29 @@
                 {
                   <li class="nav-item">
                     <a class="nav-link" asp-action="Index" asp-controller="AdminUser">Users</a>
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                      List of users
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a class="dropdown-item" asp-action="Agents" asp-controller="AdminUser">
+                          Agents
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" asp-action="Clients" asp-controller="AdminUser">
+                          Clients
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" asp-action="Developers" asp-controller="AdminUser">
+                          Developers
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
                   </li>
                 }
               </ul>

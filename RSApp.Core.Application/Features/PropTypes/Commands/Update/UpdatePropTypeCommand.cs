@@ -2,11 +2,22 @@ using AutoMapper;
 using MediatR;
 using RSApp.Core.Domain.Entities;
 using RSApp.Core.Services.Repositories;
+using Swashbuckle.AspNetCore.Annotations;
+
 namespace RSApp.Core.Application.Features.PropTypes.Commands.Update;
 
+/// <summary>
+/// Parameters for updating a sale
+/// </summary>
 public class UpdatePropTypeCommand : IRequest<UpdatePropTypeResponse> {
+  /// <example> 1 </example>
+  [SwaggerParameter(Description = "Id of sale")]
   public int Id { get; set; }
+  /// <example> Rent </example>
+  [SwaggerParameter(Description = "Name of sale")]
   public string Name { get; set; } = null!;
+  /// <example> Example description </example>
+  [SwaggerParameter(Description = "Description of sale")]
   public string? Description { get; set; } = null!;
 }
 

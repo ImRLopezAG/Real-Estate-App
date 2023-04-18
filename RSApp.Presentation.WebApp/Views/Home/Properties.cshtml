@@ -1,13 +1,16 @@
-@using RSApp.Core.Services.ViewModels;
+﻿@using RSApp.Core.Services.ViewModels;
 @model IEnumerable<PropertyVm>
 @using RSApp.Core.Services.Dtos.Account
 @using Microsoft.AspNetCore.Http;
 @using RSApp.Core.Services.Helpers;
 @inject IHttpContextAccessor _httpContext;
+
 @{
+  ViewData["Title"] = "Agent Properties";
   AuthenticationResponse? user = _httpContext.HttpContext.Session.Get<AuthenticationResponse>("user");
 }
 
+<h1 class="text-2xl my-3">@ViewData["Title"]</h1>
 <div class="row">
   @if (Model.Count() != 0)
   {
@@ -26,7 +29,8 @@
               <p class="card-text">Sale Type: <small class="text-body-secondary">@item.Sale</small></p>
               <h4 class="card-text">Price: <small class="text-body-secondary">@item.Price</small></h4>
               <div class="flex flex-row gap-3">
-                @if (user != null && user.Roles.Where(x => x.ToString() == "Client" || x.ToString() == "Agent").Any())
+                @if (user != null && user.Roles.Where(x => x.ToString() == "Client" || x.ToString() ==
+               "Agent").Any())
                 {
                   <form asp-action=@(item.Favorite ?"DeleteFromFavorite" :"AddToFavorite") asp-controller="Property"
               onsubmit="function(e){e.preventDefault();}">
@@ -40,7 +44,6 @@
               type="button">
                   Details
                 </button>
-                <a asp-action="Edit" asp-controller="Property" asp-route-id="@item.Id"   class="btn btn-outline-primary"><i class="bi bi-pencil"></i></a>
               </div>
               <div id="modal_@item.Id" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
             class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -86,7 +89,7 @@
   else
   {
     <div class="alert alert-warning" role="alert">
-      No properties created
+      this agent doesn't have any properties yet
     </div>
   }
 </div>

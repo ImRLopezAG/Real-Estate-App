@@ -51,24 +51,30 @@ public class AdminUserController : Controller {
     return View("Index");
   }
 
+    [Authorize(Roles = "Admin")]
+  public IActionResult Agents() => View();
+    [Authorize(Roles = "Admin")]
+  public IActionResult Clients() => View();
+    [Authorize(Roles = "Admin")]
+  public IActionResult Developers() => View();
+
   [Authorize(Roles = "Admin")]
   public async Task<IActionResult> Edit(string id) => View(await _userService.GetEntity(id));
 
-  [Authorize(Roles = "Admin")]
-  [ServiceFilter(typeof(SaveAuthorize))]
   [HttpPost]
   public async Task<IActionResult> Edit(SaveUserVm model) {
     if (!ModelState.IsValid)
       return View(model);
 
-    RegisterResponse response = await _userService.UpdateUserAsync(model);
-    if (response.HasError) {
-      model.HasError = response.HasError;
-      model.Error = response.Error;
+    try {
+      var user = await _userService.GetEntity(model.Id);
+      user.Image = ManageFile.Upload(model.ImageFile, model.Id, true, user.Image);
+      await _userService.UpdateUserAsync(user);
+      return RedirectToRoute(new { controller = "AdminUser", action = "Index" });
+    } catch (Exception ex) {
+      model.HasError = true;
+      model.Error = ex.Message;
       return View(model);
     }
-    return RedirectToRoute(new { controller = "User", action = "Index" });
   }
-
-
 }
