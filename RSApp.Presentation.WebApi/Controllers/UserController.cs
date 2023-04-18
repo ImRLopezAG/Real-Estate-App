@@ -2,15 +2,20 @@ using Microsoft.AspNetCore.Mvc;
 using Restaurant.Presentation.WebApi.Core;
 using RSApp.Core.Services.Contracts;
 using RSApp.Core.Services.Dtos.Account;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace RSApp.Presentation.WebApi.Controllers;
 
 public class UserController : BaseApiController {
-  private readonly IAccountService _accountService;
+    private readonly IAccountService _accountService;
 
-  public UserController(IAccountService accountService) => _accountService = accountService;
+    public UserController(IAccountService accountService) => _accountService = accountService;
 
-  [HttpPost("authenticate")]
-  public async Task<IActionResult> AuthenticateAsync([FromQuery] AuthenticationRequest request) => Ok(await _accountService.AuthenticateAsync(request, true));
+    [HttpPost("authenticate")]
+    [SwaggerOperation(
+          summary: "Login de usuario",
+          description: "Recibe los parametros para logearse en la API"
+      )]
+    public async Task<IActionResult> AuthenticateAsync([FromQuery] AuthenticationRequest request) => Ok(await _accountService.AuthenticateAsync(request, true));
 
 }

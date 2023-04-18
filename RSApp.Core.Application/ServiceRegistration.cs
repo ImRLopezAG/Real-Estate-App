@@ -10,7 +10,7 @@ namespace RSApp.Core.Application;
 public static class ServiceRegistration {
   public static void AddApplicationServices(this IServiceCollection services) {
     services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
+    services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
     #region Services
     services.AddTransient(typeof(IGenericService<,,>), typeof(GenericService<,,>));
     services.AddTransient<IUserService, UserService>();
