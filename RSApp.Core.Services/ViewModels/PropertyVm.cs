@@ -17,4 +17,6 @@ public class PropertyVm : BaseVm {
   public int TypeId { get; set; }
   public int SaleId { get; set; }
   public bool Favorite { get; set; }
+  public ICollection<ImageVm> Images { get; set; } = null!;
+  public ICollection<UpgradeVm> Upgrades { get; set; } = null!;
 }

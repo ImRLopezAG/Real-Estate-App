@@ -10,6 +10,7 @@ public class AuthenticationResponse {
   public bool HasError { get; set; }
   public string? Error { get; set; }
   public string JWToken { get; set; } = null!;
+  public string Image { get; set; } = null!;
 
   [JsonIgnore]
   public string RefreshToken { get; set; } = null!;

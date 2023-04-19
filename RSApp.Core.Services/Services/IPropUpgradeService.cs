@@ -5,5 +5,7 @@ using RSApp.Core.Services.ViewModels.SaveVm;
 
 namespace RSApp.Core.Services.Services;
 
-public interface IPropertyService : IGenericService<PropertyVm, SavePropertyVm, Property> {
+public interface IPropUpgradeService: IGenericService<PropUpgradeVm, SavePropUpgradeVm, PropertyUpgrade>
+{
+  Task SaveRange(IEnumerable<SavePropUpgradeVm> models);
 }

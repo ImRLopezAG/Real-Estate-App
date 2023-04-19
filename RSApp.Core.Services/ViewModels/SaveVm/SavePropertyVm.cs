@@ -28,4 +28,6 @@ public class SavePropertyVm : BaseVm {
   public string? Portrait { get; set; } = null!;
   public IEnumerable<PropTypeVm>? Types { get; set; } = null!;
   public IEnumerable<SaleVm>? Sales { get; set; } = null!;
+  public IEnumerable<UpgradeVm>? Upgrades { get; set; } = null!;
+  public ICollection<int>? UpgradeId { get; set; }
 }

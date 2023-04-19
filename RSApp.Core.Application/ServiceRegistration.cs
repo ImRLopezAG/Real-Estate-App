@@ -21,6 +21,7 @@ public static class ServiceRegistration{
     services.AddTransient<IUpgradeService, UpgradeService>();
     services.AddTransient<IFavoriteService, FavoriteService>();
     services.AddTransient<IImageService, ImageService>();
+    services.AddTransient<IPropUpgradeService, PropUpgradeService>();
     #endregion
   }
 }

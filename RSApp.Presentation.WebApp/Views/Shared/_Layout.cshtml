@@ -8,15 +8,17 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>@ViewData["Title"] - Real State App</title>
   <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+  <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="~/RSApp.Presentation.WebApp.styles.css" asp-append-version="true" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com/3.3.0"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -63,9 +65,24 @@
           <div class="offcanvas-header bg-dark text-white">
             @if (user != null)
             {
-              <div class="d-flex flex-row gap-3 align-items-center">
-                <h5 class="text-white"><i class="bi bi-at"></i>@user.UserName</h5>
+              <div class="d-flex flex-row gap-3 align-items-center dropdown">
+                <a asp-action="Edit" asp-controller="Profile">
+                  <img src="@user.Image" class="rounded-circle" width="50" height="50" />
+                </a>
+                <button lass="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                  <i class="bi bi-at"></i> @user.UserName <i class="bi bi-menu-button-wide-fill"></i>
+
+                </button>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" asp-action="Edit" asp-controller="Profile" asp-route-id="@user.Id">Edit</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" asp-action="Logout" asp-controller="User">Logout</a>
+                  </li>
               </div>
+
             }
             else
             {
@@ -80,7 +97,7 @@
                 <li class="nav-item">
                   <a class="nav-link active" asp-action="Index" asp-controller="Home">Home</a>
                 </li>
-                @if (user.Roles.Where(x => x.ToString() == "Client").Any()) 
+                @if (user.Roles.Where(x => x.ToString() == "Client").Any())
                 {
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -95,7 +112,7 @@
                       </li>
                     </ul>
                   </li>
-                  
+
                 }
                 else if (user.Roles.Where(x => x.ToString() == "Agent").Any())
                 {
@@ -106,7 +123,7 @@
                     </a>
                     <ul class="dropdown-menu">
                       <li>
-                        <a class="dropdown-item" asp-action="Create" asp-controller="Property">
+                        <a class="dropdown-item" asp-action="Create" asp-controller="Agent">
                           Create
                         </a>
                       </li>
@@ -124,11 +141,11 @@
                     </ul>
                   </li>
                 }
-                else 
+                else
                 {
                   <li class="nav-item">
                     <a class="nav-link" asp-action="Index" asp-controller="AdminUser">Users</a>
-                    <li class="nav-item dropdown">
+                  <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                   aria-expanded="false">
                       List of users
