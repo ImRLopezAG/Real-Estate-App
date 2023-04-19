@@ -29,8 +29,7 @@
               <p class="card-text">Sale Type: <small class="text-body-secondary">@item.Sale</small></p>
               <h4 class="card-text">Price: <small class="text-body-secondary">@item.Price</small></h4>
               <div class="flex flex-row gap-3">
-                @if (user != null && user.Roles.Where(x => x.ToString() == "Client" || x.ToString() ==
-               "Agent").Any())
+                @if (user != null && user.Roles.Where(x => x.ToString() == "Client" || x.ToString() == "Agent").Any())
                 {
                   <form asp-action=@(item.Favorite ?"DeleteFromFavorite" :"AddToFavorite") asp-controller="Property"
               onsubmit="function(e){e.preventDefault();}">
@@ -70,12 +69,34 @@
                       <p class="text-base leading-relaxed text-gray-600 dark:text-gray-400">
                         @item.Description
                       </p>
-
+                      <section class="img-secondary max-w-2xl h-80">
+                        @foreach (var image in item.Images)
+                        {
+                          <div>
+                            <img src="@image.ImagePath" class="img-fluid rounded-lg " alt="@item.Description" >
+                          </div>
+                        }
+                        
+                      </section>
                     </div>
-                    <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600 flex-row gap-1 align-baseline">
                       <button data-modal-hide="modal_@item.Id" type="button"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I
                         accept</button>
+                      <section class="flex flex-row gap-1">
+                        Upgrades: 
+                        @foreach (var upgrade in item.Upgrades)
+                        {
+                          <span id="upgrades" class="text-sm text-gray-600 dark:text-gray-400 ">@upgrade.Name</span>
+                        } 
+                        <script>
+                          var upgrade = document.querySelectorAll('#upgrades');
+                          upgrade.forEach((item) => {
+                            item.classList.add('bg-blue-100', 'text-blue-800', 'rounded-full', 'px-2', 'py-1', 'text-xs', 'font-semibold', 'mr-2', 'mb-2', 'dark:bg-blue-800', 'dark:text-blue-100');
+                          });
+                        </script>
+                      <section/>
+                        
                     </div>
                   </div>
                 </div>
@@ -93,3 +114,4 @@
     </div>
   }
 </div>
+

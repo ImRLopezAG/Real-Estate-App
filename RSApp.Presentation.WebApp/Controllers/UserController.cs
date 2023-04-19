@@ -27,6 +27,11 @@ public class UserController : Controller {
     }
     AuthenticationResponse user = await _userService.LoginAsync(model);
     if (user != null && user.HasError != true) {
+      if (user.Roles.Contains("Dev")) {
+        model.HasError = true;
+        model.Error = "You are not allowed to access this page";
+        return View(model);
+      }
       HttpContext.Session.Set<AuthenticationResponse>("user", user);
       return RedirectToRoute(new { controller = "Home", action = "Index" });
     } else {

@@ -2,12 +2,12 @@
 @model SavePropertyVm;
 
 @{
-  ViewData["Title"] = "Edit Property";
+  ViewData["Title"] = "Create Property";
 }
 
 <div class="row text-lg">
   <div class="col-md-5">
-    <h2 class="text-3xl mb-3">Editing: @Model.Code</h2>
+    <h2 class="text-3xl mb-3">Create property</h2>
     @if (Model.HasError)
     {
       <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -21,6 +21,7 @@
       <div class="alert alert-danger" role="alert">
         No Property types Created, please contact an admin
       </div>
+
     }
     else if (Model.Sales.Count() == null || Model.Sales.Count() == 0)
     {
@@ -36,11 +37,16 @@
     }
     else
     {
-      <form asp-action="Create" asp-controller="Property" enctype="multipart/form-data">
+      <form asp-action="Create" enctype="multipart/form-data">
         <div class="form-group mb-3">
           <label asp-for="ImageFile" class="control-label">Potrait</label>
           <input asp-for="ImageFile" class="form-control" required />
           <span asp-validation-for="ImageFile" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+          <label asp-for="ImageFiles" class="control-label">Secondary images</label>
+          <input asp-for="ImageFiles" class="form-control" multiple />
+          <span asp-validation-for="ImageFiles" class="text-danger"></span>
         </div>
         <div class="form-group mb-3">
           <label asp-for="Description" class="control-label"></label>
@@ -88,8 +94,8 @@
           </select>
         </div>
         <div class="form-group mb-3">
-          <label asp-for="UpgradeId" class="control-label"></label>
-          <select asp-for="UpgradeId" class="form-control" aria-multiline="true" multiple aria-multiselectable="true">
+          <label asp-for="UpgradeId" class="control-label"> Upgrades</label>
+          <select asp-for="UpgradeId" class="form-control"  multiple>
             @foreach (var upgrade in Model.Upgrades)
             {
               <option value="@upgrade.Id">@upgrade.Name</option>
@@ -99,7 +105,7 @@
         </div>
         <div class="btn-group mb-3 col-12">
           <a asp-action="Index" asp-controller="Home" class="btn btn-outline-primary w-full">Back</a>
-          <input type="submit" class="btn w-25 btn-outline-success w-100" value="Edit" />
+          <input type="submit" class="btn w-25 btn-outline-success w-100" value="Create" />
         </div>
       </form>
     }
@@ -114,11 +120,8 @@
       {
         placeholder: "Select Upgrades",
         allowClear: true,
-        Animation: true,
-        multiple: true,
       }
     );
   });
 </script>
-
 }

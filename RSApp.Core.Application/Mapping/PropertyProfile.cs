@@ -24,6 +24,7 @@ public class PropertyProfile : Profile {
       .ForMember(vm => vm.ImageFile, opt => opt.Ignore())
       .ForMember(vm => vm.Types, opt => opt.Ignore())
       .ForMember(vm => vm.Sales, opt => opt.Ignore())
+      .ForMember(vm => vm.Upgrades, opt => opt.Ignore())
       .ForMember(vm => vm.HasError, opt => opt.Ignore())
       .ForMember(vm => vm.ErrorMessage, opt => opt.Ignore())
       .ReverseMap()

@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RSApp.Core.Services.Contracts;
@@ -22,11 +21,36 @@ public class ProfileController: Controller
     _currentUser = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
   }
 
-  
-  public async Task<IActionResult> Index() => View(await _userService.GetEntity(_currentUser.Id));
+  public IActionResult Create() => View(new SaveUserVm());
 
   [HttpPost]
-  public async Task<IActionResult> Index(SaveUserVm model) {
+  public async Task<IActionResult> Create(SaveUserVm model) {
+    if (!ModelState.IsValid)
+      return View(model);
+
+    var origin = Request.Headers["origin"];
+
+    RegisterResponse response = await _userService.RegisterAsync(model, origin);
+    if (response.HasError) {
+      model.HasError = response.HasError;
+      model.Error = response.Error;
+      return View(model);
+    }
+
+    if (response.UserId != null) {
+      var user = await _userService.GetEntity(response.UserId);
+      user.Image = ManageFile.Upload(model.ImageFile, response.UserId);
+      await _userService.UpdateUserAsync(user);
+    }
+
+    return RedirectToRoute(new { controller = "User", action = "Index" });
+  }
+  [Authorize]
+  public async Task<IActionResult> Edit() => View(await _userService.GetEntity(_currentUser.Id));
+
+  [HttpPost]
+  [Authorize]
+  public async Task<IActionResult> Edit(SaveUserVm model) {
     if (!ModelState.IsValid)
       return View(model);
     try{
@@ -40,6 +64,4 @@ public class ProfileController: Controller
       return View(model);
     }
   }
-
-
 }
