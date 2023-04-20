@@ -3,9 +3,14 @@ using MediatR;
 using RSApp.Core.Services.Repositories;
 using RSApp.Core.Services.Services;
 using RSApp.Core.Services.ViewModels;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace RSApp.Core.Application.Features.Properties.Queries.GetById {
+/// <summary>
+/// Property by ID
+/// </summary>
     public class GetByIdPropertiesQuery : IRequest<PropertyVm> {
+        [SwaggerParameter(Description = "ID for property")]
         public int Id { get; set; }
     }
 
