@@ -6,11 +6,16 @@ using AutoMapper;
 using MediatR;
 using RSApp.Core.Services.Services;
 using RSApp.Core.Services.ViewModels;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace RSApp.Core.Application.Features.Properties.Queries.GetByCode
 {
+/// <summary>
+/// Property by Code
+/// </summary>
     public class GetByCodePropertyQuery:IRequest<PropertyVm>
     {
+        [SwaggerParameter(Description = "Code for property")]
         public string Code { get; set; } = null!;
     }
 

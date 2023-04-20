@@ -6,6 +6,9 @@ using RSApp.Core.Services.Services;
 using RSApp.Core.Services.ViewModels;
 
 namespace RSApp.Core.Application.Features.Properties.Queries.GetAll {
+/// <summary>
+/// Properties List
+/// </summary>
     public class GetAllPropertiesQuery : IRequest<IEnumerable<PropertyVm>> { }
 
 }
