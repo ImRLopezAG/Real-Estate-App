@@ -38,6 +38,9 @@ body {
   max-height: 250px;
 }
 
+.img-secondary::-webkit-scrollbar {
+  display: none;
+}
 
 .img-secondary img{
   object-fit: cover;

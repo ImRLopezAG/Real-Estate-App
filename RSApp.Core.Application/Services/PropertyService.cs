@@ -58,7 +58,7 @@ public class PropertyService : GenericService<PropertyVm, SavePropertyVm, Proper
                 {
                   ppt.Type = type.Name;
                   ppt.Sale = sale.Name;
-                  ppt.Seller = user.FullName;
+                  ppt.Seller = user;
                   ppt.Images = _mapper.Map<ICollection<ImageVm>>(images.Where(i => i.PropertyId == property.Id));
                   ppt.Upgrades = _mapper.Map<ICollection<UpgradeVm>>(upgrades.Where(u => propUpgrades.Any(pu => pu.PropertyId == property.Id && pu.UpgradeId == u.Id)));
                   ppt.Favorite = _currentUser != null ? favorites.Any(f => f.PropertyId == property.Id && f.UserId == _currentUser.Id) : false;

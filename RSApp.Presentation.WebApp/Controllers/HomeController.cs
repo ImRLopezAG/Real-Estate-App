@@ -24,8 +24,8 @@ public class HomeController : Controller {
   }
 
   public async Task<IActionResult> Agents(){
-    var agents = await _userService.GetAll();
-    return View(agents.Where(us => us.Role == "Agent"));
+    var agents = await _userService.GetAll().ContinueWith(t => t.Result.OrderBy(u => u.FirstName).ToList());
+    return View(agents.Where(us => us.Role == "Agent" && us.EmailConfirmed == true));
   }
 
   public async Task<IActionResult> Properties(string id){

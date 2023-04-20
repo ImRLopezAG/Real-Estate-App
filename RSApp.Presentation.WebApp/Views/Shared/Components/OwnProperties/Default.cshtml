@@ -21,10 +21,16 @@
           <div class="col-md-8">
             <div class="card-body flex flex-col gap-2">
               <h3 class="card-title"><strong>Property code: </strong>@item.Code</h3>
-              <h4 class="card-text">Agent: <small class="text-body-secondary">@item.Seller</small></h4>
-              <p class="card-text">Type: <small class="text-body-secondary">@item.Type</small></p>
-              <p class="card-text">Sale Type: <small class="text-body-secondary">@item.Sale</small></p>
-              <h4 class="card-text">Price: <small class="text-body-secondary">@item.Price</small></h4>
+              <h4 class="card-text"><strong>Agent: </strong><small class="text-body-secondary">@item.Seller.FullName</small></h4>
+              <div class="flex flex-row align-baseline gap-3">
+                <p class="card-text"><strong>Type : </strong><small class="text-body-secondary">@item.Type</small></p>
+                <p class="card-text"><strong>Sale Type: </strong><small class="text-body-secondary">@item.Sale</small></p>
+              </div>
+              <div class="flex flex-row align-baseline gap-3">
+                <p class="card-text"><strong>Rooms : </strong><small class="text-body-secondary">@item.Rooms</small></p>
+                <p class="card-text"><strong>Bathrooms: </strong><small class="text-body-secondary">@item.Bathrooms</small></p>
+              </div>
+              <h4 class="card-text"><strong>Price: </strong> <small class="text-body-secondary">@item.Price</small></h4>
               <div class="flex flex-row gap-3">
                 @if (user != null && user.Roles.Where(x => x.ToString() == "Client" || x.ToString() == "Agent").Any())
                 {
@@ -67,6 +73,26 @@
                       <p class="text-base leading-relaxed text-black dark:text-gray-400">
                         <strong>Description:</strong> @item.Description
                       </p>
+                      <div>
+                        <div class="flex flex-col gap-2">
+                          <strong>Agent information</strong>
+                          <div class="flex flex-row align-baseline items-center gap-1">
+                            <img src="@item.Seller.Image" alt="@item.Seller.FullName" class="rounded-full h-10 w-10">
+                            <span>@item.Seller.FullName</span>
+                          </div>
+                          <div class="flex flex-row align-baseline items-center gap-2">
+                            <i class="bi bi-telephone-fill"></i>
+                            <span>@item.Seller.PhoneNumber</span>
+                            <i class="bi bi-envelope-fill"></i>
+                            <span>@item.Seller.Email</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <strong>
+                          <h3>Images</h3>
+                        </strong>
+                      </div>
                       <section class="img-secondary max-w-2xl h-80">
                         @foreach (var image in item.Images)
                         {
