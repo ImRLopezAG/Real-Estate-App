@@ -27,6 +27,13 @@ builder.Services.AddApiVersioningExtension();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 
+builder.Services.AddAuthorization(opt => {
+  opt.AddPolicy("AdminOrDev", policy => policy.RequireRole("Dev", "Admin"));
+  opt.AddPolicy("Developer", policy => policy.RequireRole("Dev"));
+  opt.AddPolicy("Administrator", policy => policy.RequireRole("Admin"));
+
+});
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();

@@ -1,4 +1,5 @@
 using System.Net.Mime;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Presentation.WebApi.Core;
 using RSApp.Core.Application.Features.Upgrades.Commands.Create;
@@ -20,6 +21,10 @@ namespace RSApp.Presentation.WebApi.Controllers
         summary: "List of upgrades",
         description: "Get all upgrades"
     )]
+    [Authorize(Policy = "AdminOrDev")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> List(GetAllUpgradeQuery query)
     {
       try
@@ -29,7 +34,7 @@ namespace RSApp.Presentation.WebApi.Controllers
       }
       catch (Exception ex)
       {
-        return BadRequest(ex.Message);
+        return StatusCode(StatusCodes.Status404NotFound, ex.Message);
       }
     }
 
@@ -39,6 +44,10 @@ namespace RSApp.Presentation.WebApi.Controllers
         summary: "Get a upgrade by ID",
         description: "Get a upgrade by ID"
     )]
+    [Authorize(Policy = "AdminOrDev")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Get([FromQuery] int id)
     {
       try
@@ -47,7 +56,7 @@ namespace RSApp.Presentation.WebApi.Controllers
       }
       catch (Exception ex)
       {
-        return BadRequest(ex.Message);
+        return StatusCode(StatusCodes.Status404NotFound, ex.Message);
       }
     }
 
@@ -57,6 +66,10 @@ namespace RSApp.Presentation.WebApi.Controllers
         summary: "Create a new upgrade",
         description: "Get the parameters to create a new upgrade"
     )]
+    [Authorize(Policy = "Administrator")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Post([FromBody] CreateUpgradeCommand command)
     {
       try
@@ -66,7 +79,7 @@ namespace RSApp.Presentation.WebApi.Controllers
       }
       catch (Exception ex)
       {
-        return BadRequest(ex.Message);
+        return StatusCode(StatusCodes.Status404NotFound, ex.Message);
       }
     }
 
@@ -76,20 +89,27 @@ namespace RSApp.Presentation.WebApi.Controllers
         summary: "Update a upgrade",
         description: "Get the parameters to update a upgrade"
     )]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize(Policy = "Administrator")]
     public async Task<IActionResult> Put([FromBody] UpdateUpgradeCommand command)
     {
       try
       {
-        await Mediator.Send(command);
-        return NoContent();
+        var result = await Mediator.Send(command);
+        return Ok(result);
       }
       catch (Exception ex)
       {
-        return BadRequest(ex.Message);
+        return StatusCode(StatusCodes.Status404NotFound, ex.Message);
       }
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Policy = "Administrator")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Delete([FromQuery] int id)
     {
       try
@@ -99,7 +119,7 @@ namespace RSApp.Presentation.WebApi.Controllers
       }
       catch (Exception ex)
       {
-        return BadRequest(ex.Message);
+        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
       }
     }
 
