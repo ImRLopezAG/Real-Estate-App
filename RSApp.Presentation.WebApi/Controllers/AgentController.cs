@@ -28,7 +28,6 @@ namespace RSApp.Presentation.WebApi.Controllers {
         )]
         public async Task<IActionResult> List() {
             try {
-                AccountDto query = new AccountDto();
                 var props = await _service.GetAll();
                 var users = await _account.GetAll().ContinueWith(r => r.Result.Join(props, u => u.Id, p => p.Agent, (u, p) => new {
                      u.Id,
@@ -52,12 +51,50 @@ namespace RSApp.Presentation.WebApi.Controllers {
        summary: "Get a agent by ID",
        description: "Get a agent by ID"
    )]
-        public async Task<IActionResult> Get([FromQuery] string id) {
+        public async Task<IActionResult> Get(string id) {
             try {
-                return Ok(await _account.GetById(id));
+                var props = await _service.GetAll();
+                var users = await _account.GetById(id);
+                users.Products = props.Where(x => x.Agent == id).Count();
+                return Ok(users);
             } catch (Exception ex) {
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("{id}")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [SwaggerOperation(
+       summary: "Get property by agent ID",
+       description: "Get property by agent ID"
+        )]
+       public async Task<IActionResult> GetAgentProperty(string id){
+            try {
+               var props = await _service.GetAll().ContinueWith(r => r.Result.Where(x => x.Agent == id).ToList());
+               return Ok(props);
+            } catch (Exception ex) {
+                return BadRequest(ex.Message);
+            }
+       }
+
+        [HttpPost("{id}")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [SwaggerOperation(
+       summary: "Change by agent ID",
+       description: "Change by agent ID"
+        )]
+       public async Task<IActionResult> ChangeStatus(string id){
+            try {
+            var props = await _service.GetAll().ContinueWith(r => r.Result.Where(x => x.Agent == id).ToList());
+            var userIsVerify = await _account.GetById(id);
+            userIsVerify.Products = props.Count();
+            await _account.ChangeStatus(userIsVerify.Id);
+
+            return Ok(userIsVerify);
+            } catch (Exception ex) {
+                return BadRequest(ex.Message);
+            }
+       }
+
     }
 }
