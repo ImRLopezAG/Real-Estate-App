@@ -28,4 +28,8 @@
 		<ProjectReference Include="..\RSApp.Core.Services\RSApp.Core.Services.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Features\Properties\Commands\" />
+	</ItemGroup>
+
 </Project>
