@@ -21,7 +21,7 @@ public static class EmailRequests {
                     />
                     <div style='padding: 0 1.2rem'>
                       <p style='font-size: 1rem; color: #ffffff;'>
-                        Welcome to the Real State App:<span style='color: #3789e7; font-weight: 500'> {name} {lastName}</span>
+                        Welcome to the Social Network App:<span style='color: #3789e7; font-weight: 500'> {name} {lastName}</span>
                       </p>
                       <div
                       style='display: flex; justify-content: center; align-items: center'

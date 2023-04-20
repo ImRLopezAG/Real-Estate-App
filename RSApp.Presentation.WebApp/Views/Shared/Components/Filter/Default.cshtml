@@ -1,0 +1,36 @@
+@using RSApp.Core.Services.ViewModels;
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor _httpContext;
+@model IEnumerable<PropTypeVm>
+
+<form asp-action="Filter">
+  <div  class="flex flex-colum gap-3 justify-center">
+    <div class="form-group">
+      <label for="search">Search</label>
+      <input type="text" class="form-control" id="search" name="propertyCode" placeholder="Search">
+      <label for="type">Type</label>
+      <select class="form-control" id="type" name="propTypeId">
+        <option selected>Type</option>
+        @foreach (var item in Model)
+        {
+          <option value="@item.Id">@item.Name</option>
+        }
+      </select>
+      </div>
+      <div class="form-group">
+        <label for="status">Min Price</label>
+        <input type="number" class="form-control" name="minPrice" id="minPrice" placeholder="Min Price">
+        <label for="status">Max Price</label>
+        <input type="number" class="form-control" name="maxPrice" id="maxPrice" placeholder="Max Price">
+      </div>
+      <div class="form-group">
+        <label for="status">Bathrooms</label>
+        <input type="number" class="form-control" name="bathrooms" id="bathrooms" placeholder="Bathrooms">
+        <label for="status">Rooms</label>
+        <input type="number" class="form-control" name="rooms" id="rooms" placeholder="Rooms">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-outline-primary my-3">Submit</button>
+</div>
+  
+</form>

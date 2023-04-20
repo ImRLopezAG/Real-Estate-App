@@ -136,13 +136,12 @@ public class AccountService : IAccountService {
       return $"No accounts registered with this user";
     }
 
-    token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
-    var result = await _userManager.ConfirmEmailAsync(user, token);
-    if (result.Succeeded) {
-      return $"Account confirmed for {user.Email}. You can now use the app";
-    } else {
-      return $"An error occurred while confirming {user.Email}.";
-    }
+
+    user.EmailConfirmed = !user.EmailConfirmed;
+
+    await _userManager.UpdateAsync(user);
+
+    return $"Account {user.Email} has been {(user.EmailConfirmed ? "activated" : "deactivated")} successfully";
   }
 
   public async Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordRequest request, string origin) {

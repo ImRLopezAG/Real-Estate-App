@@ -27,7 +27,7 @@ builder.Services.AddAuthorization(opt => {
   opt.AddPolicy("Client", policy => policy.RequireRole("Client"));
   opt.AddPolicy("AdminOrAgent", policy => policy.RequireRole("Admin", "Agent"));
   opt.AddPolicy("AdminOrClient", policy => policy.RequireRole("Admin", "User"));
-  opt.AddPolicy("AgentOrClient", policy => policy.RequireRole("Agent", "User"));
+  opt.AddPolicy("AgentOrClient", policy => policy.RequireRole("Agent", "Client"));
 });
 
 

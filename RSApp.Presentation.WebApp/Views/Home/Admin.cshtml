@@ -1,0 +1,11 @@
+@{
+  ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+  <div class="col-md-12 text-2xl">
+    <h2>Home Page</h2>
+    <p>Admin Details</p>
+  </div>
+  @await Component.InvokeAsync("AdminList");
+</div>
