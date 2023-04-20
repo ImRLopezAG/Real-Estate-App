@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RSApp.Core.Services.Contracts;
 using RSApp.Core.Services.Dtos.Account;
 using RSApp.Core.Services.Helpers;
 using RSApp.Core.Services.Services;
@@ -9,17 +10,20 @@ using RSApp.Presentation.WebApp.helpers;
 namespace RSApp.Presentation.WebApp.Controllers;
 
 [Authorize(Roles = "Agent")]
-public class AgentController : Controller {
+public class AgentController : Controller
+{
   private readonly IPropertyService _propertyService;
   private readonly IPropTypeService _propTypeService;
   private readonly ISaleService _saleService;
   private readonly IImageService _imageService;
   private readonly IUpgradeService _upgradeService;
+  private readonly IUserService _userService;
   private readonly IPropUpgradeService _propUpgradeService;
   private readonly IHttpContextAccessor _httpContextAccessor;
-  private readonly AuthenticationResponse _currentUser;
+  private readonly AuthenticationResponse? _currentUser;
 
-  public AgentController(IPropertyService propertyService, IPropTypeService propTypeService, ISaleService saleService, IHttpContextAccessor httpContextAccessor, IImageService imageService, IUpgradeService upgradeService, IPropUpgradeService propUpgradeService) {
+  public AgentController(IPropertyService propertyService, IPropTypeService propTypeService, ISaleService saleService, IHttpContextAccessor httpContextAccessor, IImageService imageService, IUpgradeService upgradeService, IPropUpgradeService propUpgradeService, IUserService userService)
+  {
     _propertyService = propertyService;
     _propTypeService = propTypeService;
     _saleService = saleService;
@@ -27,19 +31,21 @@ public class AgentController : Controller {
     _imageService = imageService;
     _upgradeService = upgradeService;
     _propUpgradeService = propUpgradeService;
-    _currentUser = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+    _userService = userService;
+    _currentUser = _httpContextAccessor.HttpContext?.Session.Get<AuthenticationResponse>("user");
   }
   public IActionResult Index() => View();
   public IActionResult OwnProperty() => View();
-
-  public async Task<IActionResult> Create() => View(new SavePropertyVm() {
+  public async Task<IActionResult> Create() => View(new SavePropertyVm()
+  {
     Types = await _propTypeService.GetAll(),
     Sales = await _saleService.GetAll(),
     Upgrades = await _upgradeService.GetAll()
   });
 
   [HttpPost]
-  public async Task<IActionResult> Create(SavePropertyVm model) {
+  public async Task<IActionResult> Create(SavePropertyVm model)
+  {
     if (!ModelState.IsValid)
       return View(await Error(model));
 
@@ -47,13 +53,17 @@ public class AgentController : Controller {
     model.Code = Guid.NewGuid().ToString()[..8].Replace("-", "").ToUpper();
 
     var created = await _propertyService.Create(model);
-    if (created.Id != 0) {
+    if (created.Id != 0)
+    {
       created.Portrait = ManageFile.UploadProperty(model.ImageFile, _currentUser.Id, created.Id);
 
       await _propertyService.Edit(created);
-      if (model.ImageFiles != null) {
-        foreach (var image in model.ImageFiles) {
-          var img = new SaveImageVm() {
+      if (model.ImageFiles != null)
+      {
+        foreach (var image in model.ImageFiles)
+        {
+          var img = new SaveImageVm()
+          {
             PropertyId = created.Id,
             ImagePath = ManageFile.UploadPropertyImages(image, _currentUser.Id, created.Id)
           };
@@ -64,11 +74,13 @@ public class AgentController : Controller {
 
     var upgrades = await _upgradeService.GetAll();
     var validateUpgrades = upgrades.Where(x => model.UpgradeId.Contains(x.Id)).ToList();
-    
+
     List<SavePropUpgradeVm> propertyUpgrades = new();
 
-    foreach (var upgrade in validateUpgrades) {
-      propertyUpgrades.Add(new SavePropUpgradeVm() {
+    foreach (var upgrade in validateUpgrades)
+    {
+      propertyUpgrades.Add(new SavePropUpgradeVm()
+      {
         PropertyId = created.Id,
         UpgradeId = upgrade.Id,
       });
@@ -79,7 +91,8 @@ public class AgentController : Controller {
     return RedirectToAction("OwnProperty");
   }
 
-  public async Task<IActionResult> Edit(int id) {
+  public async Task<IActionResult> Edit(int id)
+  {
     var property = await _propertyService.GetEntity(id);
     property.Sales = await _saleService.GetAll();
     property.Types = await _propTypeService.GetAll();
@@ -88,44 +101,53 @@ public class AgentController : Controller {
   }
 
   [HttpPost]
-  public async Task<IActionResult> Edit(SavePropertyVm model) {
+  public async Task<IActionResult> Edit(SavePropertyVm model)
+  {
     if (!ModelState.IsValid)
       return View(model);
 
-    var upgrades = await _upgradeService.GetAll();
-    var validateUpgrades = upgrades.Where(x => model.UpgradeId.Contains(x.Id)).ToList();
+    var entity = await _propertyService.GetEntity(model.Id);
+    model.Agent = entity.Agent;
+    model.Code = entity.Code;
 
-    List<SavePropUpgradeVm> propertyUpgrades = new();
-
-    foreach (var upgrade in validateUpgrades) {
-      propertyUpgrades.Add(new SavePropUpgradeVm() {
-        PropertyId = model.Id,
-        UpgradeId = upgrade.Id,
-      });
-    }
-
-    await _propUpgradeService.SaveRange(propertyUpgrades);
-
-    var propUpgrades = await _propUpgradeService.GetAll().ContinueWith(x => x.Result.Where(y => y.PropertyId == model.Id).ToList());
-
-    foreach (var upgrade in propUpgrades) {
-      if (!model.UpgradeId.Contains(upgrade.UpgradeId))
-        await _propUpgradeService.Delete(upgrade.Id);
-    }
+    model.Portrait = ManageFile.UploadProperty(model.ImageFile, _currentUser.Id, model.Id, true, entity.Portrait);
 
     await _propertyService.Edit(model);
-    return RedirectToAction("Index");
+
+    if (model.UpgradeId != null) {
+      var upgrades = await _upgradeService.GetAll();
+      var validateUpgrades = upgrades.Where(x => model.UpgradeId.Contains(x.Id)).ToList();
+      var propUpgrades = await _propUpgradeService.GetAll().ContinueWith(x => x.Result.Where(y => y.PropertyId == model.Id).ToList());
+
+      List<SavePropUpgradeVm> propertyUpgrades = new();
+
+      foreach (var upgrade in validateUpgrades)
+      {
+        propertyUpgrades.Add(new SavePropUpgradeVm()
+        {
+          PropertyId = model.Id,
+          UpgradeId = upgrade.Id,
+        });
+      }
+      propertyUpgrades = propertyUpgrades.Where(x => !propUpgrades.Select(y => y.UpgradeId).Contains(x.UpgradeId)).ToList();
+
+      await _propUpgradeService.SaveRange(propertyUpgrades);
+    }
+
+    return RedirectToAction("OwnProperty");
   }
 
-  public async Task<IActionResult> Delete(int id) {
+  public async Task<IActionResult> Delete(int id)
+  {
     var property = await _propertyService.GetEntity(id);
     if (property != null)
       await _propertyService.Delete(id);
 
-    return RedirectToAction("Index");
+    return RedirectToAction("OwnProperty");
   }
 
-  private async Task<SavePropertyVm> Error(SavePropertyVm model) {
+  private async Task<SavePropertyVm> Error(SavePropertyVm model)
+  {
     model.Types = await _propTypeService.GetAll();
     model.Sales = await _saleService.GetAll();
     return model;

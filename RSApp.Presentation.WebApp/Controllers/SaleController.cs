@@ -50,6 +50,7 @@ public class SaleController : Controller {
     }
   }
 
+  [HttpPost]
   public async Task<IActionResult> Delete(int id) {
     var model = await _saleService.GetEntity(id);
     if (model != null) {

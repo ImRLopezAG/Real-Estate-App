@@ -37,7 +37,6 @@ public class PropertyController : Controller {
   }
 
   [HttpPost]
-  [Authorize(Roles = "Agent")]
   public async Task<IActionResult> DeleteFromFavorite(int propertyId) {
     var url = Request.Headers["Referer"].ToString();
 
@@ -45,6 +44,12 @@ public class PropertyController : Controller {
     if (entity != null) {
       await _favoriteService.Delete(entity.Id);
     }
+    return RedirectToRoute(new { controller = url.Contains("Property") ? "Property" : "Home", action = "Index" });
+  }
+
+  public async Task<IActionResult> Delete(int id) {
+    var url = Request.Headers["Referer"].ToString();
+    await _propertyService.Delete(id);
     return RedirectToRoute(new { controller = url.Contains("Property") ? "Property" : "Home", action = "Index" });
   }
 }
