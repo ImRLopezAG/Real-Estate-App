@@ -150,6 +150,7 @@ public class AgentController : Controller
   {
     model.Types = await _propTypeService.GetAll();
     model.Sales = await _saleService.GetAll();
+    model.Upgrades = await _upgradeService.GetAll();
     return model;
   }
 

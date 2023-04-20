@@ -96,8 +96,9 @@
             {
               <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li class="nav-item">
-                  <a class="nav-link active" asp-action="Index" asp-controller="Home">Home</a>
-                </li>
+                  <a class="nav-link active" asp-action=@(user.Roles.Contains("Admin") ? "Admin": "Index") asp-controller="Home">
+                    <i class="bi bi-house-fill"></i> Home
+                  </a>
                 <li class="nav-item">
                   <a class="navbar-brand" asp-action="Agents" asp-controller="Home">Agents</a>
                 </li>
@@ -110,7 +111,7 @@
                     </a>
                     <ul class="dropdown-menu">
                       <li>
-                        <a class="dropdown-item" asp-action="Favorites" asp-controller="Client">
+                        <a class="dropdown-item" asp-action="Index" asp-controller="Client">
                           Favorites
                         </a>
                       </li>
@@ -158,6 +159,11 @@
                       <li>
                         <a class="dropdown-item" asp-action="Agents" asp-controller="AdminUser">
                           Agents
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" asp-action="Admins" asp-controller="AdminUser">
+                          Admins
                         </a>
                       </li>
                       <li>

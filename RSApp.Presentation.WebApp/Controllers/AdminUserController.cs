@@ -28,6 +28,7 @@ public class AdminUserController : Controller {
   public IActionResult Agents() => View();
   public IActionResult Clients() => View();
   public IActionResult Developers() => View();
+  public IActionResult Admins() => View();
 
   public async Task<IActionResult> Edit(string id) => View(await _userService.GetEntity(id));
 

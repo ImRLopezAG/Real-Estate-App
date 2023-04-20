@@ -36,11 +36,11 @@
                 <p class="card-text"><strong>Bathrooms: </strong><small class="text-body-secondary">@item.Bathrooms</small></p>
               </div>
               <div class="flex flex-row align-baseline gap-3">
-                <p class="card-text"><strong>Area : </strong><small class="text-body-secondary">@item.Area</small></p>
-                <p class="card-text"><strong>Price: </strong><small class="text-body-secondary">@item.Price</small></p>
+                <p class="card-text"><strong>Area : </strong><small class="text-body-secondary">@item.Area Mts</small></p>
+                <p class="card-text"><strong>Price: </strong><small class="text-body-secondary">@item.Price Dom</small></p>
               </div>
               <div class="flex flex-row gap-3">
-                @if (user != null && user.Roles.Where(x => x.ToString() == "Client" || x.ToString() == "Agent").Any())
+                @if (user != null && user.Roles.Where(x => x.ToString() == "Client").Any())
                 {
                   <form asp-action=@(item.Favorite ?"DeleteFromFavorite" :"AddToFavorite") asp-controller="Property"
               onsubmit="function(e){e.preventDefault();}">

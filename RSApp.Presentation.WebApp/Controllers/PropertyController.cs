@@ -45,10 +45,10 @@ public class PropertyController : Controller {
     }
     return RedirectToRoute(new { controller = url.Contains("Property") ? "Property" : "Home", action = "Index" });
   }
-
+  [Authorize(Roles="Agent")]
   public async Task<IActionResult> Delete(int id) {
     var url = Request.Headers["Referer"].ToString();
     await _propertyService.Delete(id);
-    return RedirectToRoute(new { controller = url.Contains("Property") ? "Property" : "Home", action = "Index" });
+    return RedirectToRoute(new { controller = "Agent", action="OwnProperty" });
   }
 }

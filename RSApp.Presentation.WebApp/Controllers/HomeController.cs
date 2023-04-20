@@ -24,7 +24,11 @@ public class HomeController : Controller
 
   public async Task<IActionResult> Agents()
   {
+    var properties = await _propertyService.GetAll();
     var agents = await _userService.GetAll().ContinueWith(t => t.Result.OrderBy(u => u.FirstName).ToList());
+    foreach (var agent in agents) {
+      agent.Products = properties.Where(p => p.Agent == agent.Id).ToList().Count();
+    }
     return View(agents.Where(us => us.Role == "Agent" && us.EmailConfirmed == true));
   }
 

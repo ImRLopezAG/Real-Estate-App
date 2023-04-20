@@ -10,7 +10,7 @@ using RSApp.Infrastructure.Identity.Interfaces;
 using RSApp.Presentation.WebApp.helpers;
 
 namespace RSApp.Presentation.WebApp.Controllers;
-[Authorize]
+
 public class ProfileController : Controller {
   private readonly IUserService _userService;
   private readonly IHttpContextAccessor _httpContextAccessor;
