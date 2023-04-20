@@ -41,6 +41,7 @@
           @if (user == null)
           {
             <a class="navbar-brand" asp-action="Agents" asp-controller="Home">Agents</a>
+            <a class="navbar-brand" asp-action="Index" asp-controller="Home">Home</a>
           }
         </div>
         @if (user != null && user.Roles.Where(x => x.ToString() == "Admin").Any())
@@ -96,6 +97,9 @@
               <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li class="nav-item">
                   <a class="nav-link active" asp-action="Index" asp-controller="Home">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="navbar-brand" asp-action="Agents" asp-controller="Home">Agents</a>
                 </li>
                 @if (user.Roles.Where(x => x.ToString() == "Client").Any())
                 {
@@ -181,7 +185,7 @@
               {
                 <div class="">
                   <a class="btn btn-outline-primary " asp-action="Index" asp-controller="User">Login</a>
-                  <a class="btn btn-outline-primary" asp-action="Create" asp-controller="User">Register</a>
+                  <a class="btn btn-outline-primary" asp-action="Create" asp-controller="Profile">Register</a>
                 </div>
               }
             </div>

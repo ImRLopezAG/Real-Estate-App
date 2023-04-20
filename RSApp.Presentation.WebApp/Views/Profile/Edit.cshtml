@@ -15,57 +15,32 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     }
-    <form asp-action="Create" enctype="multipart/form-data">
+    <form asp-action="Edit" enctype="multipart/form-data">
       <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-      <div class="form-group">
+      <div class="form-group mb-3">
         <label asp-for="FirstName" class="text-lg ">First Name</label>
         <input asp-for="FirstName" class="form-control" />
         <span asp-validation-for="FirstName" class="text-danger"></span>
       </div>
-      <div class="form-group">
+      <div class="form-group mb-3">
         <label asp-for="LastName" class="text-lg">Last Name</label>
         <input asp-for="LastName" class="form-control" />
         <span asp-validation-for="LastName" class="text-danger"></span>
       </div>
-      <div class="form-group">
+      <div class="form-group mb-3">
         <label asp-for="ImageFile" class="text-lg">Image</label>
         <input asp-for="ImageFile" class="form-control"  required />
         <span asp-validation-for="ImageFile" class="text-danger"></span>
       </div>
-      <div class="form-group">
-        <label asp-for="Email" class="text-lg"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-      </div>
-      <div class="form-group">
+      <div class="form-group mb-3">
         <label asp-for="PhoneNumber" class="text-lg">Phone </label>
         <input asp-for="PhoneNumber" class="form-control" />
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
       </div>
-      <div class="form-group">
-        <label asp-for="DNI" class="text-lg"></label>
-        <input asp-for="DNI" class="form-control" />
-        <span asp-validation-for="DNI" class="text-danger"></span>
-      </div>
-      <div class="form-group">
-        <label asp-for="UserName" class="text-lg"></label>
-        <input asp-for="UserName" class="form-control" />
-        <span asp-validation-for="UserName" class="text-danger"></span>
-      </div>
-      <div class="form-group">
-        <label asp-for="Password" class="text-lg"></label>
-        <input asp-for="Password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-      </div>
-      <div class="form-group mb-3">
-        <label asp-for="ConfirmPassword" class="text-lg"> Confirm Password</label>
-        <input asp-for="ConfirmPassword" class="form-control" />
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-      </div>
       <div>
-        <div class="btn-group mb-3 col-12">
+        <div class="btn-group mb-3 mb-3 col-12">
           <a asp-action="Index" asp-controller="Home" class="btn btn-outline-primary w-full">Back</a>
-          <input type="submit" class="btn w-25 btn-outline-success w-100" value="Create" />
+          <input type="submit" class="btn w-25 btn-outline-success w-100" value="Edit" />
         </div>
       </div>
     </form>

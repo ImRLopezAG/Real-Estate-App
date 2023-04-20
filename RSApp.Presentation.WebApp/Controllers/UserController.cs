@@ -33,7 +33,7 @@ public class UserController : Controller {
         return View(model);
       }
       HttpContext.Session.Set<AuthenticationResponse>("user", user);
-      return RedirectToRoute(new { controller = "Home", action = "Index" });
+      return RedirectToRoute(new { controller = "Home", action = user.Roles.Contains("Admin") ? "Admin" : "Index" });
     } else {
       model.HasError = user.HasError;
       model.Error = user.Error;
