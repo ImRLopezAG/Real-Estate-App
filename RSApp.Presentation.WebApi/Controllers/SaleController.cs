@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Presentation.WebApi.Core;
 using RSApp.Core.Application.Features.Sales.Commands.Create;
@@ -18,12 +19,16 @@ namespace RSApp.Presentation.WebApi.Controllers {
         summary: "List of sales",
         description: "Get all sales"
     )]
+    [Authorize(Policy = "AdminOrDev")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> List(GetAllSalesQuery query) {
       try {
         var result = await Mediator.Send(query);
         return Ok(result);
       } catch (Exception ex) {
-        return BadRequest(ex.Message);
+        return StatusCode(StatusCodes.Status404NotFound, ex.Message);
       }
     }
 
@@ -33,11 +38,15 @@ namespace RSApp.Presentation.WebApi.Controllers {
         summary: "Get a sale by ID",
         description: "Get a sale by ID"
     )]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize(Policy = "AdminOrDev")]
     public async Task<IActionResult> Get([FromQuery] int id) {
       try {
         return Ok(await Mediator.Send(new GetByIdQuery { Id = id }));
       } catch (Exception ex) {
-        return BadRequest(ex.Message);
+        return StatusCode(StatusCodes.Status404NotFound, ex.Message);
       }
     }
 
@@ -47,13 +56,17 @@ namespace RSApp.Presentation.WebApi.Controllers {
         summary: "Create a new sale",
         description: "Get the parameters to create a new sale"
     )]
+    [Authorize(Policy = "Administrator")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
     public async Task<IActionResult> Create([FromBody] CreateSaleCommand command) {
       try {
         await Mediator.Send(command);
         return NoContent();
       } catch (Exception ex) {
-        return BadRequest(ex.Message);
+        return StatusCode(StatusCodes.Status404NotFound, ex.Message);
       }
     }
 
@@ -63,12 +76,15 @@ namespace RSApp.Presentation.WebApi.Controllers {
         summary: "Update a sale",
         description: "Get the parameters to update a sale"
     )]
-
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize(Policy = "Administrator")]
     public async Task<IActionResult> Update([FromBody] UpdateSaleCommand command) {
       try {
         return Ok(await Mediator.Send(command));
       } catch (Exception ex) {
-        return BadRequest(ex.Message);
+        return StatusCode(StatusCodes.Status404NotFound, ex.Message);
       }
     }
 
@@ -77,12 +93,15 @@ namespace RSApp.Presentation.WebApi.Controllers {
         summary: "Delete a sale",
         description: "Get the ID of the sale to delete"
     )]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Authorize(Policy = "Administrator")]
     public async Task<IActionResult> Delete(int id) {
       try {
         await Mediator.Send(new DeleteSaleCommand { Id = id });
         return NoContent();
       } catch (Exception ex) {
-        return BadRequest(ex.Message);
+        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
       }
     }
   }

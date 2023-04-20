@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Presentation.WebApi.Core;
 using RSApp.Core.Application.Features.Properties.Queries.GetAll;
@@ -8,6 +9,7 @@ using System.Net.Mime;
 
 namespace RSApp.Presentation.WebApi.Controllers {
     [ApiVersion("1.0")]
+    [Authorize(Policy = "AdminOrDev")]
     [SwaggerTag("Maintenance of property types")]
     public class PropertyController : BaseApiController {
         [HttpGet("List")]
@@ -16,12 +18,17 @@ namespace RSApp.Presentation.WebApi.Controllers {
             summary: "List of properties",
             description: "Get all properties"
         )]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        [Authorize(Policy = "AgentOrClient")]
         public async Task<IActionResult> List(GetAllPropertiesQuery query) {
             try {
                 var result = await Mediator.Send(query);
                 return Ok(result);
             } catch (Exception ex) {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
         }
 
@@ -31,12 +38,15 @@ namespace RSApp.Presentation.WebApi.Controllers {
             summary: "Property by ID",
             description: "Get Property by ID"
         )]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetById(GetByIdPropertiesQuery query) {
             try {
                 var result = await Mediator.Send(query);
                 return Ok(result);
             } catch (Exception ex) {
-                return BadRequest(ex.Message);
+               return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
         }
 
@@ -46,12 +56,15 @@ namespace RSApp.Presentation.WebApi.Controllers {
             summary: "Property by Code",
             description: "Get Property by Code"
         )]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetByCode(GetByCodePropertyQuery query) {
             try {
                 var result = await Mediator.Send(query);
                 return Ok(result);
             } catch (Exception ex) {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
         }
     }
