@@ -1,0 +1,63 @@
+@using RSApp.Core.Services.Dtos.Account
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor _httpContext;
+@model IEnumerable<AccountDto>
+@{
+  ViewData["Title"] = "Agents";
+}
+
+
+<div class="row">
+  <div class="d-flex justify-content-between align-items-center">
+    <h1 class="font-monospace text-2xl">Agents</h1>
+    <form asp-action="AgentFilter" class="flex flex-row gap-3" asp-controller="Home">
+    <div class="form-group">
+      <input type="search" name="name" class="form-control form-control-sm" placeholder="Search by name" />
+    </div>
+    <input type="submit" value="Search" class="btn btn-outline-primary btn-sm">
+  </form>
+  </div>
+  <hr class="my-3"/>
+  <table class="table table-dark table-striped table-hover text-center">
+    <thead class="text-center ">
+      <tr>
+        <th>
+          Profile
+        </th>
+        <th>
+          Name
+        </th>
+        <th>
+          Email
+        </th>
+        <th>
+          Role
+        </th>
+        <th>
+          Actions
+        </th>
+      </tr>
+    </thead>
+    <tbody class="items-baseline align-middle">
+      @foreach (var item in Model) {
+        <tr>
+          <td>
+            <img src="@(item.Image)" class="rounded-3xl mx-auto" style="width: 40px; height: 40px;" />
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.FullName)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.Email)
+          </td>
+          <td>
+            @Html.DisplayFor(modelItem => item.Role)
+          </td>
+          <td>
+            <a class="btn btn-outline-primary" asp-controller="Home" asp-action="Properties" asp-route-id="@item.Id">Properties</a>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

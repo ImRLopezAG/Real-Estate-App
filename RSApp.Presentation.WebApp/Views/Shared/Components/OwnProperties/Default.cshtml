@@ -21,25 +21,30 @@
           <div class="col-md-8">
             <div class="card-body flex flex-col gap-2">
               <h3 class="card-title"><strong>Property code: </strong>@item.Code</h3>
-              <h4 class="card-text">Agent: <small class="text-body-secondary">@item.Seller</small></h4>
-              <p class="card-text">Type: <small class="text-body-secondary">@item.Type</small></p>
-              <p class="card-text">Sale Type: <small class="text-body-secondary">@item.Sale</small></p>
-              <h4 class="card-text">Price: <small class="text-body-secondary">@item.Price</small></h4>
-              <div class="flex flex-row gap-3">
-                @if (user != null && user.Roles.Where(x => x.ToString() == "Client" || x.ToString() == "Agent").Any())
-                {
-                  <form asp-action=@(item.Favorite ?"DeleteFromFavorite" :"AddToFavorite") asp-controller="Property"
-              onsubmit="function(e){e.preventDefault();}">
-                    <input type="hidden" name="propertyId" value="@item.Id" />
-                    <button type="submit" class="btn btn-outline-@(item.Favorite ?"danger" :"primary")"><i
-                  class="bi bi-star-fill"></i></button>
-                  </form>
-                }
+              <h4 class="card-text"><strong>Agent: </strong><small class="text-body-secondary">@item.Seller.FullName</small></h4>
+              <div class="flex flex-row align-baseline gap-3">
+                <p class="card-text"><strong>Type : </strong><small class="text-body-secondary">@item.Type</small></p>
+                <p class="card-text"><strong>Sale Type: </strong><small class="text-body-secondary">@item.Sale</small></p>
+              </div>
+              <div class="flex flex-row align-baseline gap-3">
+                <p class="card-text"><strong>Rooms : </strong><small class="text-body-secondary">@item.Rooms</small></p>
+                <p class="card-text"><strong>Bathrooms: </strong><small class="text-body-secondary">@item.Bathrooms</small></p>
+              </div>
+              <div class="flex flex-row align-baseline gap-3">
+                <p class="card-text"><strong>Area : </strong><small class="text-body-secondary">@item.Area Mts</small></p>
+                <p class="card-text"><strong>Price: </strong><small class="text-body-secondary">@item.Price Dom</small></p>
+              </div>              <div class="flex flex-row gap-3">
+                
                 <button data-modal-target="modal_@item.Id" data-modal-toggle="modal_@item.Id"
               class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               type="button">
                   Details
                 </button>
+                <a asp-action="Edit" asp-controller="Agent" asp-route-id="@item.Id"   class="btn btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                <form asp-action="Delete" asp-controller="Property">
+              <input type="hidden" name="id" value="@item.Id" />
+              <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this property type: @item.Code?')"><i class="bi bi-trash"></i></button>
+            </form>
               </div>
               <div id="modal_@item.Id" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
             class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -47,7 +52,7 @@
                   <!-- Modal content -->
               <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                     <!-- Modal header -->
-                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                <div class="flex items-start text-black justify-between p-4 border-b rounded-t ">
                       <h3 class="text-xl font-semibold">
                         Details of : @item.Code
                       </h3>
@@ -63,15 +68,53 @@
                     </div>
                     <!-- Modal body -->
                 <div class="p-6 space-y-6">
-                      <p class="text-base leading-relaxed text-gray-600 dark:text-gray-400">
-                        @item.Description
+                      <p class="text-base leading-relaxed text-black dark:text-gray-400">
+                        <strong>Description:</strong> @item.Description
                       </p>
-
+                      <div>
+                        <div class="flex flex-col gap-2">
+                          <strong>Agent information</strong>
+                          <div class="flex flex-row align-baseline items-center gap-1">
+                            <img src="@item.Seller.Image" alt="@item.Seller.FullName" class="rounded-full h-10 w-10">
+                            <span>@item.Seller.FullName</span>
+                          </div>
+                          <div class="flex flex-row align-baseline items-center gap-2">
+                            <i class="bi bi-telephone-fill"></i>
+                            <span>@item.Seller.PhoneNumber</span>
+                            <i class="bi bi-envelope-fill"></i>
+                            <span>@item.Seller.Email</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <strong>
+                          <h3>Images</h3>
+                        </strong>
+                      </div>
+                      <section class="img-secondary max-w-2xl h-80">
+                        @foreach (var image in item.Images)
+                        {
+                          <div>
+                            <img src="@image.ImagePath" class="img-fluid rounded-lg " alt="@item.Description" >
+                          </div>
+                        }
+                        
+                      </section>
                     </div>
-                    <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                      <button data-modal-hide="modal_@item.Id" type="button"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I
-                        accept</button>
+                    <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600 flex-row gap-1 align-baseline">
+                      <section class="flex flex-row gap-1">
+                        Upgrades: 
+                        @foreach (var upgrade in item.Upgrades)
+                        {
+                          <span id="upgrades" class="text-sm text-gray-600 dark:text-gray-400 ">@upgrade.Name</span>
+                        } 
+                        <script>
+                          var upgrade = document.querySelectorAll('#upgrades');
+                          upgrade.forEach((item) => {
+                            item.classList.add('bg-blue-100', 'text-blue-800', 'rounded-full', 'px-2', 'py-1', 'text-xs', 'font-semibold', 'mr-2', 'mb-2', 'dark:bg-blue-800', 'dark:text-blue-100');
+                          });
+                        </script>
+                      <section/>
                     </div>
                   </div>
                 </div>

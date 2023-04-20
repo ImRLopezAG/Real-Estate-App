@@ -5,4 +5,5 @@ namespace RSApp.Core.Services.Repositories;
 
 public interface IImageRepository : IGenericRepository<Image> {
   Task DeleteRange(List<Image> images);
+  Task<IEnumerable<Image>> GetByPropertyId(int id);
 }

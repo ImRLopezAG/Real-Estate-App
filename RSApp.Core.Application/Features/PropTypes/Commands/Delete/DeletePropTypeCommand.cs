@@ -1,22 +1,33 @@
 using MediatR;
+using RSApp.Core.Application.Wrappers;
 using RSApp.Core.Services.Repositories;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace RSApp.Core.Application.Features.PropTypes.Commands.Delete;
 
-public class DeletePropTypeCommand : IRequest<int> {
+/// <summary>
+/// Parameters for deleting a sale
+/// </summary>
+public class DeletePropTypeCommand : IRequest<Response<int>>
+{
+  /// <example> 1 </example>
+  [SwaggerParameter(Description = "Id of sale")]
   public int Id { get; set; }
 }
 
-public class DeletePropTypeCommandHandler : IRequestHandler<DeletePropTypeCommand, int> {
+public class DeletePropTypeCommandHandler : IRequestHandler<DeletePropTypeCommand, Response<int>>
+{
   private readonly IPropTypeRepository _propTypeRepository;
 
-  public DeletePropTypeCommandHandler(IPropTypeRepository propTypeRepository) {
+  public DeletePropTypeCommandHandler(IPropTypeRepository propTypeRepository)
+  {
     _propTypeRepository = propTypeRepository;
   }
 
-  public async Task<int> Handle(DeletePropTypeCommand request, CancellationToken cancellationToken) {
+  public async Task<Response<int>> Handle(DeletePropTypeCommand request, CancellationToken cancellationToken)
+  {
     var propType = await _propTypeRepository.GetEntity(request.Id) ?? throw new Exception("PropType not found");
     await _propTypeRepository.Delete(propType);
-    return propType.Id;
+    return new Response<int>(propType.Id);
   }
 }

@@ -1,0 +1,31 @@
+@using RSApp.Presentation.WebApp.Models;
+@model AdminVm
+
+<div class="row border text-dark p-2">
+  <dl>
+    <dt>Properties</dt>
+    <dd>
+      @Model.Properties
+    </dd>
+    <hr>
+    <dt>Actives clients</dt>
+    <dd>
+      @Model.Clients
+    </dd>
+    <hr>
+    <dt>Inactive clients</dt>
+    <dd>
+      @Model.UnActiveClients
+    </dd>
+    <hr>
+    <dt>Active Devs</dt>
+    <dd>
+      @Model.Developers
+    </dd>
+    <hr>
+    <dt>Inactive Devs</dt>
+    <dd>
+      @Model.UnActiveDevelopers
+    </dd>
+  </dl>
+</div>

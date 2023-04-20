@@ -8,15 +8,17 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>@ViewData["Title"] - Real State App</title>
   <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+  <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="~/RSApp.Presentation.WebApp.styles.css" asp-append-version="true" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com/3.3.0"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -34,7 +36,14 @@
   <header>
     <nav class="navbar navbar-dark bg-dark mb-4">
       <div class="container-fluid d-flex">
-        <a class="navbar-brand" asp-action="Index" asp-controller="@(user!=null? "Home":"User")">RSApp</a>
+        <div>
+          <a class="navbar-brand" asp-action="Index" asp-controller="@(user!=null? "Home":"User")">RSApp</a>
+          @if (user == null)
+          {
+            <a class="navbar-brand" asp-action="Agents" asp-controller="Home">Agents</a>
+            <a class="navbar-brand" asp-action="Index" asp-controller="Home">Home</a>
+          }
+        </div>
         @if (user != null && user.Roles.Where(x => x.ToString() == "Admin").Any())
         {
           <ul class="navbar-nav gap-3 d-flex flex-row flex-grow-1">
@@ -57,9 +66,24 @@
           <div class="offcanvas-header bg-dark text-white">
             @if (user != null)
             {
-              <div class="d-flex flex-row gap-3 align-items-center">
-                <h5 class="text-white"><i class="bi bi-at"></i>@user.UserName</h5>
+              <div class="d-flex flex-row gap-3 align-items-center dropdown">
+                <a asp-action="Edit" asp-controller="Profile">
+                  <img src="@user.Image" class="rounded-circle" width="50" height="50" />
+                </a>
+                <button lass="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                  <i class="bi bi-at"></i> @user.UserName <i class="bi bi-menu-button-wide-fill"></i>
+
+                </button>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" asp-action="Edit" asp-controller="Profile" asp-route-id="@user.Id">Edit</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" asp-action="Logout" asp-controller="User">Logout</a>
+                  </li>
               </div>
+
             }
             else
             {
@@ -72,9 +96,13 @@
             {
               <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li class="nav-item">
-                  <a class="nav-link active" asp-action="Index" asp-controller="Home">Home</a>
+                  <a class="nav-link active" asp-action=@(user.Roles.Contains("Admin") ? "Admin": "Index") asp-controller="Home">
+                    <i class="bi bi-house-fill"></i> Home
+                  </a>
+                <li class="nav-item">
+                  <a class="navbar-brand" asp-action="Agents" asp-controller="Home">Agents</a>
                 </li>
-                @if (user.Roles.Where(x => x.ToString() == "Client").Any()) 
+                @if (user.Roles.Where(x => x.ToString() == "Client").Any())
                 {
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -83,13 +111,13 @@
                     </a>
                     <ul class="dropdown-menu">
                       <li>
-                        <a class="dropdown-item" asp-action="Favorites" asp-controller="Client">
+                        <a class="dropdown-item" asp-action="Index" asp-controller="Client">
                           Favorites
                         </a>
                       </li>
                     </ul>
                   </li>
-                  
+
                 }
                 else if (user.Roles.Where(x => x.ToString() == "Agent").Any())
                 {
@@ -100,7 +128,7 @@
                     </a>
                     <ul class="dropdown-menu">
                       <li>
-                        <a class="dropdown-item" asp-action="Create" asp-controller="Property">
+                        <a class="dropdown-item" asp-action="Create" asp-controller="Agent">
                           Create
                         </a>
                       </li>
@@ -118,10 +146,38 @@
                     </ul>
                   </li>
                 }
-                else 
+                else
                 {
                   <li class="nav-item">
                     <a class="nav-link" asp-action="Index" asp-controller="AdminUser">Users</a>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                      List of users
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a class="dropdown-item" asp-action="Agents" asp-controller="AdminUser">
+                          Agents
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" asp-action="Admins" asp-controller="AdminUser">
+                          Admins
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" asp-action="Clients" asp-controller="AdminUser">
+                          Clients
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" asp-action="Developers" asp-controller="AdminUser">
+                          Developers
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
                   </li>
                 }
               </ul>
@@ -135,7 +191,7 @@
               {
                 <div class="">
                   <a class="btn btn-outline-primary " asp-action="Index" asp-controller="User">Login</a>
-                  <a class="btn btn-outline-primary" asp-action="Create" asp-controller="User">Register</a>
+                  <a class="btn btn-outline-primary" asp-action="Create" asp-controller="Profile">Register</a>
                 </div>
               }
             </div>
