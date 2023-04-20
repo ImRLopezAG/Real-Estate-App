@@ -33,4 +33,9 @@ public class HomeController : Controller {
     return View(properties.Where(p => p.Agent == id));
   }
 
+  public async Task<IActionResult> AgentFilter(string name){
+    var users = await _userService.GetAll();
+    return View(users.Where(x => x.FullName.Contains(name)).ToList());
+  }
+
 }

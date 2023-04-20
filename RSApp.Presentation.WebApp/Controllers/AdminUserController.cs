@@ -17,7 +17,6 @@ public class AdminUserController : Controller {
   }
   public IActionResult Index() => View();
 
-  
   public async Task<IActionResult> ChangeStatus(string id) {
     var userIsVerify = await _userService.GetById(id);
 
