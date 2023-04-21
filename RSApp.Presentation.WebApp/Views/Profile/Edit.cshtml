@@ -1,0 +1,55 @@
+@model RSApp.Core.Services.ViewModels.SaveVm.SaveUserVm
+@{
+  ViewData["Title"] = "Editing User";
+}
+
+<h1 class="text-4xl mb-3">Editing: @Model.UserName</h1>
+
+<hr class="my-3"/>
+<div class="row">
+  <div class="col-md-4">
+    @if (Model.HasError)
+    {
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <p>@Model.Error</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    }
+    <form asp-action="Edit" enctype="multipart/form-data">
+      <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+      <div class="form-group mb-3">
+        <label asp-for="FirstName" class="text-lg ">First Name</label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+      </div>
+      <div class="form-group mb-3">
+        <label asp-for="LastName" class="text-lg">Last Name</label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+      </div>
+      <div class="form-group mb-3">
+        <label asp-for="ImageFile" class="text-lg">Image</label>
+        <input asp-for="ImageFile" class="form-control"  required />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+      </div>
+      <div class="form-group mb-3">
+        <label asp-for="PhoneNumber" class="text-lg">Phone </label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+      </div>
+      <div>
+        <div class="btn-group mb-3 mb-3 col-12">
+          <a asp-action="Index" asp-controller="Home" class="btn btn-outline-primary w-full">Back</a>
+          <input type="submit" class="btn w-25 btn-outline-success w-100" value="Edit" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+@section Scripts {
+@{
+await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+
+}

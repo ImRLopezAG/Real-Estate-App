@@ -2,10 +2,13 @@ using AutoMapper;
 using MediatR;
 using RSApp.Core.Services.Repositories;
 using RSApp.Core.Services.ViewModels;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace RSApp.Core.Application.Features.PropTypes.Queries.GetBbyId;
 
 public class GetByIdPropTypeQuery : IRequest<PropTypeVm> {
+
+  [SwaggerParameter(Description = "Id of sale")]
   public int Id { get; set; }
 }
 

@@ -23,12 +23,25 @@ public class UserController : Controller {
   [HttpPost]
   public async Task<IActionResult> Index(LoginVm model) {
     if (!ModelState.IsValid) {
+      model.HasError =true;
+      model.Error= "Invalid data";
       return View(model);
     }
     AuthenticationResponse user = await _userService.LoginAsync(model);
     if (user != null && user.HasError != true) {
+      if (user.Roles.Contains("Dev")) {
+        model.HasError = true;
+        model.Error = "You are not allowed to access this page";
+        return View(model);
+      }
       HttpContext.Session.Set<AuthenticationResponse>("user", user);
-      return RedirectToRoute(new { controller = "Home", action = "Index" });
+      if (user.Roles.Contains("Admin")) {
+        return RedirectToRoute(new { controller = "Home", action = "Admin" });
+      }else if (user.Roles.Contains("Client")) {
+        return RedirectToRoute(new { controller = "Home", action = "Index" });
+      } else {
+        return RedirectToRoute(new { controller = "Agent", action = "OwnProperty" });
+      }
     } else {
       model.HasError = user.HasError;
       model.Error = user.Error;
@@ -40,7 +53,7 @@ public class UserController : Controller {
     HttpContext.Session.Remove("user");
     HttpContext.Response.Cookies.Delete("token");
     HttpContext.Response.Cookies.Delete("Authorization");
-    return RedirectToRoute(new { controller = "User", action = "Index" });
+    return RedirectToRoute(new { controller = "Home", action = "Index" });
   }
 
   [ServiceFilter(typeof(LoginAuthorize))]

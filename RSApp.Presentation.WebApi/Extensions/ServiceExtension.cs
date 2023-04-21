@@ -13,12 +13,13 @@ namespace RSApp.Presentation.WebApi.Extensions {
           Title = "Real State App API",
           Description = "This Api will be responsible for overall data distribution",
           Contact = new OpenApiContact {
-            Name = "ImrLopez",
+            Name = "ImrLopez - Luis Morla - Miguel Farias",
             Email = "20210209.edu.do",
             Url = new Uri("https://imrlopez.dev")
           }
         });
 
+        options.EnableAnnotations();
         options.DescribeAllParametersInCamelCase();
         options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
           Name = "Authorization",

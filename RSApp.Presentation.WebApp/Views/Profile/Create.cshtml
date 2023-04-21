@@ -14,7 +14,7 @@
 
 <h1 class="text-4xl mb-3">Sign Up</h1>
 
-<hr />
+<hr class="my-3"/>
 <div class="row">
   <div class="col-md-4">
     @if (Model.HasError)
@@ -74,12 +74,13 @@
       <div class="form-group mb-3">
         <label asp-for="Role" class="text-lg"></label>
         <select asp-for="Role" class="form-control">
+          <option selected>Select Role</option>
           @if (user != null && user.Roles.Contains("Admin"))
           {
             <option value="1">Admin</option>
             <option value="2">Developer</option>
-            <option value="3">Agent</option>
           }
+          <option value="3">Agent</option>
           <option value="4">Client</option>
         </select>
         <span asp-validation-for="Role" class="text-danger"></span>

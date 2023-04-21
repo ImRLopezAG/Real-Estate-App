@@ -1,4 +1,6 @@
-﻿namespace RSApp.Core.Services.Dtos.Account;
+﻿using Newtonsoft.Json;
+
+namespace RSApp.Core.Services.Dtos.Account;
 public class RegisterRequest {
   public string? Id { get; set; } = null!;
   public string FirstName { get; set; } = null!;
@@ -9,6 +11,7 @@ public class RegisterRequest {
   public string ConfirmPassword { get; set; } = null!;
   public string PhoneNumber { get; set; } = null!;
   public string DNI { get; set; } = null!;
+  [JsonIgnore]
   public int Role { get; set; }
   public string Image { get; set; } = null!;
 }

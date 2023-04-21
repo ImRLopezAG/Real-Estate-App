@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using RSApp.Core.Domain.Entities;
 using RSApp.Core.Services.Repositories;
 using RSApp.Infrastructure.Persistence.Context;
@@ -14,4 +15,6 @@ public class ImageRepository : GenericRepository<Image>, IImageRepository {
     _context.Images.RemoveRange(images);
     await _context.SaveChangesAsync();
   }
+
+  public async Task<IEnumerable<Image>> GetByPropertyId(int id) => await _context.Images.Where(x => x.PropertyId == id).ToListAsync();
 }

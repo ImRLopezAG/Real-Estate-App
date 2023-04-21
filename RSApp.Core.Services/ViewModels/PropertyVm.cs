@@ -1,4 +1,5 @@
 using RSApp.Core.Services.Core.Models;
+using RSApp.Core.Services.Dtos.Account;
 
 namespace RSApp.Core.Services.ViewModels;
 
@@ -10,11 +11,13 @@ public class PropertyVm : BaseVm {
   public int Bathrooms { get; set; }
   public string Description { get; set; } = null!;
   public string Agent { get; set; } = null!;
-  public string Seller { get; set; } = null!;
+  public AccountDto Seller { get; set; } = null!;
   public string Type { get; set; } = null!;
   public string Sale { get; set; } = null!;
   public string Portrait { get; set; } = null!;
   public int TypeId { get; set; }
   public int SaleId { get; set; }
   public bool Favorite { get; set; }
+  public ICollection<ImageVm> Images { get; set; } = null!;
+  public ICollection<UpgradeVm> Upgrades { get; set; } = null!;
 }

@@ -6,6 +6,4 @@ using RSApp.Core.Services.ViewModels.SaveVm;
 namespace RSApp.Core.Services.Services;
 
 public interface IPropertyService : IGenericService<PropertyVm, SavePropertyVm, Property> {
-  Task<IEnumerable<PropertyVm>> GetFavorites();
-  Task<IEnumerable<PropertyVm>> GetOwnProperties();
 }
